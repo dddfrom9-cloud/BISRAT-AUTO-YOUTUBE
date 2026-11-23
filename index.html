@@ -1,137 +1,66 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101827">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BISRAT AUTO YOUTUBE</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1220;--panel:#121d30;--line:#26364f;--muted:#9fb0c8;--text:#edf4ff;--accent:#62a6ff;--green:#39c98a}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#0b1220,#111d32);color:var(--text);font:15px system-ui,Arial,sans-serif}
-header{padding:24px 18px 18px;border-bottom:1px solid var(--line);background:#101827}
-.wrap{max-width:900px;margin:auto;padding:18px}
-.brand{font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:800}
-h1{font-size:25px;margin:6px 0}p{color:var(--muted);line-height:1.5;margin:6px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px;margin:16px 0}
-.card{background:rgba(18,29,48,.96);border:1px solid var(--line);border-radius:16px;padding:17px}
-h2{font-size:17px;margin:0 0 13px}
-.stat{font-size:25px;font-weight:800;margin-top:7px}
-label{display:block;color:#c8d7ed;font-size:13px;margin:12px 0 6px}
-input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #344965;background:#0c1627;color:var(--text);font-size:15px}
-button{border:0;border-radius:10px;padding:12px 15px;background:var(--accent);color:#071321;font-weight:800;font-size:14px;margin:8px 7px 0 0}
-button.secondary{background:#263954;color:var(--text)}button.green{background:var(--green)}
-pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#08111f;border:1px solid var(--line);padding:13px;border-radius:10px;color:#c9e1ff;font-size:12px}
-.small{font-size:12px;color:var(--muted)}.pill{display:inline-block;border:1px solid #2d795b;color:#8ce6b8;padding:5px 9px;border-radius:30px;font-size:12px}
-footer{padding:18px;color:var(--muted);font-size:12px;text-align:center}
+:root{--bg:#061329;--panel:#0b1e3d;--line:#244b7b;--muted:#a9c0df;--white:#f4f8ff;--blue:#087dff;--cyan:#00d9ff;--purple:#9b35ff;--green:#00d98b;--yellow:#ffd400}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 60% -20%,#193b80 0,#081a39 42%,#030b19 100%);color:var(--white);font:16px/1.45 system-ui,Segoe UI,Arial}
+button,input{font:inherit}button{cursor:pointer;border:0;color:white;font-weight:700;border-radius:12px;padding:13px 18px;background:linear-gradient(100deg,#078dff,#0758e8)}button:disabled{opacity:.45;cursor:not-allowed}
+.shell{max-width:1440px;margin:auto;display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{padding:28px 16px;background:#06152c;border-right:1px solid var(--line)}.brand{text-align:center;margin-bottom:35px}.logo{font-size:52px}.brand h2{margin:4px 0;color:#ffdf00;font-size:21px}.brand p{margin:0;color:var(--muted)}.nav{display:grid;gap:10px}.nav div{padding:13px;border-radius:12px;color:#c8d9f2}.nav .active{background:#075ee8;color:white;box-shadow:0 0 20px #087dff66}.by{margin-top:50px;padding:16px;border:1px solid var(--line);border-radius:14px;color:#dbe8fb;font-size:14px}
+main{padding:24px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.top h1{font-size:clamp(22px,3vw,34px);margin:0}.top h1 span{color:#ffdc00}.sub{color:var(--muted);margin:3px 0 0}.online{color:#3df0a9;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.stat,.panel,.queue,.rightbox{background:linear-gradient(145deg,#0c2448,#081831);border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 10px 30px #0003}.stat small{display:block;color:var(--muted)}.stat strong{font-size:25px;display:block;margin:5px 0}.green{color:#20e99a}.modes{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mode{padding:20px;border-radius:18px;background:#082650;border:1px solid #00aaff;box-shadow:0 0 20px #008dff26}.mode.once{background:#21134b;border-color:#9d42ff}.mode h2{margin:0 0 5px;font-size:21px}.mode p{margin:0 0 16px;color:#d0def2}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{background:#071832;border:1px solid #294e7a;border-radius:12px;padding:10px 12px}.field label{display:block;color:#c4d7f1;font-size:13px;margin-bottom:5px}.field input{width:100%;background:transparent;color:white;border:0;outline:0;font-size:22px;font-weight:700}.check{display:flex;gap:9px;align-items:center;margin:13px 0;color:#e5efff}.check input{width:18px;height:18px;accent-color:#08baff}.mode button{width:100%;margin-top:4px}.once button{background:linear-gradient(100deg,#b22cff,#6322ed)}
+.timer{margin:18px 0;padding:17px 20px;border:1px solid #a33cff;border-radius:16px;background:linear-gradient(90deg,#24134c,#081b39);display:flex;justify-content:space-between;align-items:center;gap:14px}.timer strong{font-size:clamp(24px,4vw,38px);color:var(--yellow);font-variant-numeric:tabular-nums}.timer small{display:block;color:var(--muted)}.lower{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px}.queue h2,.rightbox h2{font-size:19px;margin:0 0 12px}.queue p,.rightbox p{color:var(--muted);font-size:14px}.notice{border:1px solid #795e22;background:#2a230e;color:#ffe8a1;padding:12px;border-radius:12px;margin-top:12px;font-size:13px}.rightcol{display:grid;gap:14px;align-content:start}.rightbox button{width:100%;margin:5px 0;background:#123b6a}.statusline{color:#a9c0df;font-size:13px;min-height:20px;margin-top:12px}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.side{display:none}main{padding:16px}.stats{grid-template-columns:repeat(2,1fr)}.lower{grid-template-columns:1fr}}
+@media(max-width:600px){.modes{grid-template-columns:1fr}.top{align-items:flex-start}.online{font-size:13px}.timer{align-items:flex-start;flex-direction:column}.fields{gap:8px}.stat{padding:13px}.stat strong{font-size:22px}}
 </style>
 </head>
 <body>
-<header><div class="wrap">
-<div class="brand">BISRAT • AUTOMATION CONTROL</div>
-<h1>BISRAT AUTO YOUTUBE</h1>
-<p>Manage your posting schedule and prepare workflow settings.</p>
-</div></header>
-<main class="wrap">
-<div class="grid">
- <section class="card"><div class="small">AUTOMATION</div><div class="stat" id="autoState">Configured</div><span class="pill">GitHub Actions</span></section>
- <section class="card"><div class="small">CURRENT INTERVAL</div><div class="stat" id="intervalState">Every 6 hours</div><p class="small">Saved in this browser only until applied to GitHub.</p></section>
- <section class="card"><div class="small">POSTING TIME ZONE</div><div class="stat" id="tzState">Local time</div><p class="small">Choose the time zone used for your schedule.</p></section>
-</div>
-<section class="card">
-<h2>Posting schedule</h2>
-<p>Choose an interval or set specific daily posting times. GitHub Actions uses UTC, so this dashboard converts your chosen local times.</p>
-<label for="mode">Schedule type</label>
-<select id="mode"><option value="interval">Repeat every few hours</option><option value="daily">Specific times each day</option></select>
-<div id="intervalBox">
-<label for="hours">Repeat interval (hours)</label>
-<select id="hours"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>6</option><option>8</option><option>12</option><option>24</option></select>
-</div>
-<div id="dailyBox" hidden>
-<label for="times">Daily posting times (24-hour local time, comma-separated)</label>
-<input id="times" value="00:17,06:17,12:17,18:17" placeholder="09:00,15:00,21:00">
-</div>
-<label for="timezone">Time zone</label>
-<select id="timezone">
-<option value="Africa/Addis_Ababa">Ethiopia — Africa/Addis_Ababa</option>
-<option value="Asia/Singapore">Singapore — Asia/Singapore</option>
-<option value="UTC">UTC</option>
-<option value="Europe/London">London — Europe/London</option>
-<option value="America/New_York">New York — America/New_York</option>
-<option value="Asia/Dubai">Dubai — Asia/Dubai</option>
-<option value="Asia/Kolkata">India — Asia/Kolkata</option>
-</select>
-<button class="green" id="generate">Generate GitHub schedule</button>
-<button class="secondary" id="save">Save settings on this device</button>
-<div id="result" hidden>
-<label>UTC cron schedule for GitHub Actions</label>
-<pre id="cron"></pre>
-<button id="copy">Copy cron</button>
-<label>Workflow schedule block</label>
-<pre id="yaml"></pre>
-<button id="copyYaml">Copy workflow block</button>
-<p class="small">Copy this schedule into .github/workflows/autopost.yml under the existing <code>on:</code> section. Do not create a second competing schedule entry.</p>
-</div>
+<div class="shell">
+<aside class="side"><div class="brand"><div class="logo">👑▶️</div><h2>BISRAT<br>AUTO YOUTUBE</h2><p>Post • Grow • Earn</p></div>
+<div class="nav"><div class="active">⌂　Dashboard</div><div>▣　Upload History</div><div>⚙　Settings</div><div>▥　Statistics</div><div>ⓘ　About</div></div>
+<div class="by">⭐ By Bisrat<br><small>For a Better Future 🇪🇹</small></div></aside>
+<main>
+<header class="top"><div><h1>🚀 BISRAT <span>AUTO YOUTUBE</span></h1><p class="sub">Automated posting control panel</p></div><div class="online">● Dashboard ready</div></header>
+<section class="stats">
+<div class="stat"><small>Posting mode</small><strong id="modeStat">Not started</strong><small>Choose a mode below</small></div>
+<div class="stat"><small>Repeat interval</small><strong id="intervalStat">2h 30m</strong><small>Mode 1 setting</small></div>
+<div class="stat"><small>One-time delay</small><strong id="delayStat">3h 15m</strong><small>Mode 2 setting</small></div>
+<div class="stat"><small>Timer</small><strong id="statusStat" class="green">Stopped</strong><small>Browser timer status</small></div>
 </section>
-<section class="card" style="margin-top:14px">
-<h2>Connection status</h2>
-<p>This first dashboard version does not connect directly to GitHub or YouTube and does not display live upload counts. It never asks for or stores your Google refresh token or GitHub password.</p>
-<p>To apply a schedule, update the workflow file in your GitHub repository. Keep all OAuth credentials in GitHub Actions Secrets.</p>
+<section class="modes">
+<div class="mode"><h2>🔁 Mode 1: Repeat interval</h2><p>Process the next eligible video at each interval, in queue order.</p>
+<div class="fields"><div class="field"><label for="rh">Hours</label><input id="rh" type="number" min="0" max="720" value="2"></div><div class="field"><label for="rm">Minutes</label><input id="rm" type="number" min="0" max="59" value="30"></div></div>
+<label class="check"><input id="continueQueue" type="checkbox" checked> Continue until the queue is empty</label>
+<button id="startRepeat">▶ Start repeat mode</button></div>
+<div class="mode once"><h2>⌛ Mode 2: One-time delay</h2><p>Start a timer now; when it finishes, process one next eligible video. No automatic repeat.</p>
+<div class="fields"><div class="field"><label for="oh">Hours</label><input id="oh" type="number" min="0" max="720" value="3"></div><div class="field"><label for="om">Minutes</label><input id="om" type="number" min="0" max="59" value="15"></div></div>
+<label class="check"><input id="oneOnly" type="checkbox" checked disabled> Post only once (no repeat)</label>
+<button id="startOnce">▶ Start one-time timer</button></div>
 </section>
-</main>
-<footer>BISRAT AUTO YOUTUBE • Private control panel prototype</footer>
+<section class="timer"><div><small id="timerLabel">Next action countdown</small><strong id="countdown">--:--:--</strong></div><button id="stopTimer" style="background:#425f8f">■ Stop timer</button></section>
+<section class="lower">
+<div class="queue"><h2>📁 Video queue (Google Drive)</h2><p>The cloud posting workflow should select the next unposted Drive video and remember its unique file ID to prevent duplicates.</p>
+<div class="notice">Important: this website preview does not read Google Drive or publish videos by itself. The GitHub Actions workflow must be updated to read these settings and perform the actual upload.</div>
+<div class="statusline" id="message">Ready. Choose a mode to test its timer.</div>
+</div>
+<div class="rightcol"><div class="rightbox"><h2>⚡ Quick actions</h2><button id="saveBtn">Save settings on this device</button><button id="exportBtn">Export settings JSON</button><button id="stopBtn">Stop current timer</button></div>
+<div class="rightbox"><h2>🛡 Duplicate protection</h2><p>Required cloud behavior: store processed Google Drive file IDs in state.json and skip them on every run.</p></div></div>
+</section>
+</main></div>
 <script>
 const $=id=>document.getElementById(id);
-const mode=$('mode'), hours=$('hours'), times=$('times'), tz=$('timezone');
-mode.addEventListener('change',()=>{$('intervalBox').hidden=mode.value!=='interval';$('dailyBox').hidden=mode.value!=='daily';});
-function partsAt(date, zone){
- const p=new Intl.DateTimeFormat('en-GB',{timeZone:zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date);
- return {h:+p.find(x=>x.type==='hour').value,m:+p.find(x=>x.type==='minute').value};
-}
-function localToUtc(h,m,zone){
- // Find the UTC minute corresponding to the selected wall-clock minute.
- const target=h*60+m;
- const now=new Date();
- const ymd=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
- const [y,mo,d]=ymd.split('-').map(Number);
- let guess=Date.UTC(y,mo-1,d,h,m);
- for(let i=0;i<4;i++){
-  const got=partsAt(new Date(guess),zone);
-  let diff=target-(got.h*60+got.m);
-  if(diff>720)diff-=1440;if(diff<-720)diff+=1440;
-  guess+=diff*60000;
- }
- const u=new Date(guess);
- return {h:u.getUTCHours(),m:u.getUTCMinutes()};
-}
-function generate(){
- const zone=tz.value; let entries=[];
- if(mode.value==='interval'){
-  const n=+hours.value;
-  // Preserve a regular interval using UTC hours; use minute 17 as a stable offset.
-  for(let h=0;h<24;h+=n) entries.push({h,m:17});
- } else {
-  const raw=times.value.split(',').map(x=>x.trim()).filter(Boolean);
-  if(!raw.length)throw Error('Enter at least one time.');
-  for(const t of raw){
-   const match=t.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
-   if(!match)throw Error('Use 24-hour times like 09:00,15:30.');
-   entries.push(localToUtc(+match[1],+match[2],zone));
-  }
- }
- const unique=[...new Map(entries.map(x=>[x.h+':'+x.m,x])).values()].sort((a,b)=>a.h-b.h||a.m-b.m);
- const mins=[...new Set(unique.map(x=>x.m))].sort((a,b)=>a-b);
- const hrs=unique.map(x=>x.h).sort((a,b)=>a-b);
- const cron=mins.join(',')+' '+hrs.join(',')+' * * *';
- $('cron').textContent=cron;
- $('yaml').textContent='on:\\n  schedule:\\n    - cron: "'+cron+'"\\n  workflow_dispatch:';
- $('result').hidden=false;
- $('intervalState').textContent=mode.value==='interval'?'Every '+hours.value+' hours':'Custom daily times';
- $('tzState').textContent=zone;
-}
-$('generate').onclick=()=>{try{generate()}catch(e){alert(e.message)}};
-$('save').onclick=()=>{localStorage.setItem('bisratSchedule',JSON.stringify({mode:mode.value,hours:hours.value,times:times.value,timezone:tz.value}));alert('Saved on this device. This does not change GitHub yet.');};
-$('copy').onclick=()=>navigator.clipboard.writeText($('cron').textContent).then(()=>alert('Cron copied.'));
-$('copyYaml').onclick=()=>navigator.clipboard.writeText($('yaml').textContent).then(()=>alert('Workflow block copied.'));
-try{const s=JSON.parse(localStorage.getItem('bisratSchedule')||'null');if(s){mode.value=s.mode;hours.value=s.hours;times.value=s.times;tz.value=s.timezone;mode.dispatchEvent(new Event('change'));}}catch(e){}
+let timer=null, deadline=0, mode='';
+const fmt=(s)=>{s=Math.max(0,Math.floor(s));let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return [h,m,sec].map(n=>String(n).padStart(2,'0')).join(':')};
+function values(){return {repeat_hours:+$('rh').value||0,repeat_minutes:+$('rm').value||0,repeat_until_empty:$('continueQueue').checked,one_time_hours:+$('oh').value||0,one_time_minutes:+$('om').value||0}}
+function save(){localStorage.setItem('bisratDashboardSettings',JSON.stringify(values()));$('message').textContent='Settings saved in this browser.'}
+function start(kind){const v=values(),mins=kind==='repeat'?v.repeat_hours*60+v.repeat_minutes:v.one_time_hours*60+v.one_time_minutes;if(mins<=0){$('message').textContent='Enter a time greater than zero.';return}save();stop(false);mode=kind;deadline=Date.now()+mins*60000;$('modeStat').textContent=kind==='repeat'?'Repeat interval':'One-time delay';$('statusStat').textContent='Running';$('timerLabel').textContent=kind==='repeat'?'Next repeat interval':'One-time timer';$('message').textContent=kind==='repeat'?'Repeat timer started. The cloud workflow still needs to be connected.':'One-time timer started. When it reaches zero, this browser will notify you; cloud upload is not connected yet.';tick();timer=setInterval(tick,1000)}
+function tick(){let left=Math.max(0,Math.ceil((deadline-Date.now())/1000));$('countdown').textContent=fmt(left);if(left===0){clearInterval(timer);timer=null;$('statusStat').textContent='Finished';$('message').textContent=mode==='once'?'One-time delay finished. Trigger the cloud workflow to publish the next eligible video.':'Repeat interval reached. This preview cannot trigger cloud uploads yet.';if(mode==='repeat'){$('message').textContent+=' Start the next interval manually for this preview.'}}}
+function stop(show=true){if(timer)clearInterval(timer);timer=null;deadline=0;$('countdown').textContent='--:--:--';$('statusStat').textContent='Stopped';if(show)$('message').textContent='Timer stopped.'}
+$('startRepeat').onclick=()=>start('repeat');$('startOnce').onclick=()=>start('once');$('stopTimer').onclick=()=>stop();$('stopBtn').onclick=()=>stop();$('saveBtn').onclick=save;
+$('exportBtn').onclick=()=>{const data={...values(),timezone:'Africa/Addis_Ababa'};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bisrat-posting-settings.json';a.click();URL.revokeObjectURL(a.href);$('message').textContent='Settings JSON exported.'};
+const saved=localStorage.getItem('bisratDashboardSettings');if(saved){try{const v=JSON.parse(saved);$('rh').value=v.repeat_hours??2;$('rm').value=v.repeat_minutes??30;$('continueQueue').checked=v.repeat_until_empty??true;$('oh').value=v.one_time_hours??3;$('om').value=v.one_time_minutes??15}catch(e){}}
+function updateStats(){let v=values();$('intervalStat').textContent=v.repeat_hours+'h '+v.repeat_minutes+'m';$('delayStat').textContent=v.one_time_hours+'h '+v.one_time_minutes+'m'}
+['rh','rm','oh','om'].forEach(id=>$(id).addEventListener('input',updateStats));updateStats();
 </script>
 </body></html>
