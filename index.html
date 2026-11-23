@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>BISRAT AUTO YOUTUBE</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#121d30;--line:#26364f;--muted:#9fb0c8;--text:#edf4ff;--accent:#62a6ff;--green:#39c98a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#0b1220,#111d32);color:var(--text);font:15px system-ui,Arial,sans-serif}
+header{padding:24px 18px 18px;border-bottom:1px solid var(--line);background:#101827}
+.wrap{max-width:900px;margin:auto;padding:18px}
+.brand{font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:800}
+h1{font-size:25px;margin:6px 0}p{color:var(--muted);line-height:1.5;margin:6px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px;margin:16px 0}
+.card{background:rgba(18,29,48,.96);border:1px solid var(--line);border-radius:16px;padding:17px}
+h2{font-size:17px;margin:0 0 13px}
+.stat{font-size:25px;font-weight:800;margin-top:7px}
+label{display:block;color:#c8d7ed;font-size:13px;margin:12px 0 6px}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #344965;background:#0c1627;color:var(--text);font-size:15px}
+button{border:0;border-radius:10px;padding:12px 15px;background:var(--accent);color:#071321;font-weight:800;font-size:14px;margin:8px 7px 0 0}
+button.secondary{background:#263954;color:var(--text)}button.green{background:var(--green)}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#08111f;border:1px solid var(--line);padding:13px;border-radius:10px;color:#c9e1ff;font-size:12px}
+.small{font-size:12px;color:var(--muted)}.pill{display:inline-block;border:1px solid #2d795b;color:#8ce6b8;padding:5px 9px;border-radius:30px;font-size:12px}
+footer{padding:18px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="brand">BISRAT • AUTOMATION CONTROL</div>
+<h1>BISRAT AUTO YOUTUBE</h1>
+<p>Manage your posting schedule and prepare workflow settings.</p>
+</div></header>
+<main class="wrap">
+<div class="grid">
+ <section class="card"><div class="small">AUTOMATION</div><div class="stat" id="autoState">Configured</div><span class="pill">GitHub Actions</span></section>
+ <section class="card"><div class="small">CURRENT INTERVAL</div><div class="stat" id="intervalState">Every 6 hours</div><p class="small">Saved in this browser only until applied to GitHub.</p></section>
+ <section class="card"><div class="small">POSTING TIME ZONE</div><div class="stat" id="tzState">Local time</div><p class="small">Choose the time zone used for your schedule.</p></section>
+</div>
+<section class="card">
+<h2>Posting schedule</h2>
+<p>Choose an interval or set specific daily posting times. GitHub Actions uses UTC, so this dashboard converts your chosen local times.</p>
+<label for="mode">Schedule type</label>
+<select id="mode"><option value="interval">Repeat every few hours</option><option value="daily">Specific times each day</option></select>
+<div id="intervalBox">
+<label for="hours">Repeat interval (hours)</label>
+<select id="hours"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>6</option><option>8</option><option>12</option><option>24</option></select>
+</div>
+<div id="dailyBox" hidden>
+<label for="times">Daily posting times (24-hour local time, comma-separated)</label>
+<input id="times" value="00:17,06:17,12:17,18:17" placeholder="09:00,15:00,21:00">
+</div>
+<label for="timezone">Time zone</label>
+<select id="timezone">
+<option value="Africa/Addis_Ababa">Ethiopia — Africa/Addis_Ababa</option>
+<option value="Asia/Singapore">Singapore — Asia/Singapore</option>
+<option value="UTC">UTC</option>
+<option value="Europe/London">London — Europe/London</option>
+<option value="America/New_York">New York — America/New_York</option>
+<option value="Asia/Dubai">Dubai — Asia/Dubai</option>
+<option value="Asia/Kolkata">India — Asia/Kolkata</option>
+</select>
+<button class="green" id="generate">Generate GitHub schedule</button>
+<button class="secondary" id="save">Save settings on this device</button>
+<div id="result" hidden>
+<label>UTC cron schedule for GitHub Actions</label>
+<pre id="cron"></pre>
+<button id="copy">Copy cron</button>
+<label>Workflow schedule block</label>
+<pre id="yaml"></pre>
+<button id="copyYaml">Copy workflow block</button>
+<p class="small">Copy this schedule into .github/workflows/autopost.yml under the existing <code>on:</code> section. Do not create a second competing schedule entry.</p>
+</div>
+</section>
+<section class="card" style="margin-top:14px">
+<h2>Connection status</h2>
+<p>This first dashboard version does not connect directly to GitHub or YouTube and does not display live upload counts. It never asks for or stores your Google refresh token or GitHub password.</p>
+<p>To apply a schedule, update the workflow file in your GitHub repository. Keep all OAuth credentials in GitHub Actions Secrets.</p>
+</section>
+</main>
+<footer>BISRAT AUTO YOUTUBE • Private control panel prototype</footer>
+<script>
+const $=id=>document.getElementById(id);
+const mode=$('mode'), hours=$('hours'), times=$('times'), tz=$('timezone');
+mode.addEventListener('change',()=>{$('intervalBox').hidden=mode.value!=='interval';$('dailyBox').hidden=mode.value!=='daily';});
+function partsAt(date, zone){
+ const p=new Intl.DateTimeFormat('en-GB',{timeZone:zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date);
+ return {h:+p.find(x=>x.type==='hour').value,m:+p.find(x=>x.type==='minute').value};
+}
+function localToUtc(h,m,zone){
+ // Find the UTC minute corresponding to the selected wall-clock minute.
+ const target=h*60+m;
+ const now=new Date();
+ const ymd=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+ const [y,mo,d]=ymd.split('-').map(Number);
+ let guess=Date.UTC(y,mo-1,d,h,m);
+ for(let i=0;i<4;i++){
+  const got=partsAt(new Date(guess),zone);
+  let diff=target-(got.h*60+got.m);
+  if(diff>720)diff-=1440;if(diff<-720)diff+=1440;
+  guess+=diff*60000;
+ }
+ const u=new Date(guess);
+ return {h:u.getUTCHours(),m:u.getUTCMinutes()};
+}
+function generate(){
+ const zone=tz.value; let entries=[];
+ if(mode.value==='interval'){
+  const n=+hours.value;
+  // Preserve a regular interval using UTC hours; use minute 17 as a stable offset.
+  for(let h=0;h<24;h+=n) entries.push({h,m:17});
+ } else {
+  const raw=times.value.split(',').map(x=>x.trim()).filter(Boolean);
+  if(!raw.length)throw Error('Enter at least one time.');
+  for(const t of raw){
+   const match=t.match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+   if(!match)throw Error('Use 24-hour times like 09:00,15:30.');
+   entries.push(localToUtc(+match[1],+match[2],zone));
+  }
+ }
+ const unique=[...new Map(entries.map(x=>[x.h+':'+x.m,x])).values()].sort((a,b)=>a.h-b.h||a.m-b.m);
+ const mins=[...new Set(unique.map(x=>x.m))].sort((a,b)=>a-b);
+ const hrs=unique.map(x=>x.h).sort((a,b)=>a-b);
+ const cron=mins.join(',')+' '+hrs.join(',')+' * * *';
+ $('cron').textContent=cron;
+ $('yaml').textContent='on:\\n  schedule:\\n    - cron: "'+cron+'"\\n  workflow_dispatch:';
+ $('result').hidden=false;
+ $('intervalState').textContent=mode.value==='interval'?'Every '+hours.value+' hours':'Custom daily times';
+ $('tzState').textContent=zone;
+}
+$('generate').onclick=()=>{try{generate()}catch(e){alert(e.message)}};
+$('save').onclick=()=>{localStorage.setItem('bisratSchedule',JSON.stringify({mode:mode.value,hours:hours.value,times:times.value,timezone:tz.value}));alert('Saved on this device. This does not change GitHub yet.');};
+$('copy').onclick=()=>navigator.clipboard.writeText($('cron').textContent).then(()=>alert('Cron copied.'));
+$('copyYaml').onclick=()=>navigator.clipboard.writeText($('yaml').textContent).then(()=>alert('Workflow block copied.'));
+try{const s=JSON.parse(localStorage.getItem('bisratSchedule')||'null');if(s){mode.value=s.mode;hours.value=s.hours;times.value=s.times;tz.value=s.timezone;mode.dispatchEvent(new Event('change'));}}catch(e){}
+</script>
+</body></html>
