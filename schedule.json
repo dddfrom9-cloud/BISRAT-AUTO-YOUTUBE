@@ -3,8 +3,9 @@
   "intervalHours": 6,
   "intervalMinutes": 10,
   "active": true,
-  "nextRunAt": "2026-11-24T10:24:06.596Z",
+  "nextRunAt": "2026-11-24T17:30:46.861Z",
   "lastRunAt": null,
-  "updatedAt": null,
-  "channel": 1
+  "updatedAt": "2026-11-24T11:20:46.860Z",
+  "channel": 1,
+  "intervalMinutesTotal": 370
 }
