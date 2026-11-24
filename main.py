@@ -70,8 +70,6 @@ def normalize_state(raw: dict) -> dict:
 
 
 def resolve_refresh_token(channel: int) -> str:
-    # Channel 1 uses GOOGLE_REFRESH_TOKEN; Channel 2+ checks GOOGLE_REFRESH_TOKEN_2, etc.,
-    # falling back to GOOGLE_REFRESH_TOKEN if a numbered secret isn't set.
     if channel and channel > 1:
         numbered = os.environ.get(f"GOOGLE_REFRESH_TOKEN_{channel}", "").strip()
         if numbered:
