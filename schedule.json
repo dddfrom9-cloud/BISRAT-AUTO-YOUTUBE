@@ -1,6 +1,6 @@
 {
   "active": true,
   "mode": "once",
-  "intervalMinutes": 1,
-  "nextRunAt": "2026-11-24T09:52:35.770Z"
+  "intervalMinutes": 10,
+  "nextRunAt": "2026-11-24T10:24:06.596Z"
 }
