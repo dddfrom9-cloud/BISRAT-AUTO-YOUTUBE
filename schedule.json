@@ -1,9 +1,6 @@
 {
-  "mode": "once",
-  "intervalHours": 0,
-  "intervalMinutes": 3,
   "active": true,
-  "nextRunAt": "2026-11-24T09:49:56.227Z",
-  "lastRunAt": "2026-11-24T09:31:50.696465+00:00",
-  "updatedAt": "2026-11-24T09:46:56.226Z"
+  "mode": "once",
+  "intervalMinutes": 1,
+  "nextRunAt": "2026-11-24T09:52:35.770Z"
 }
