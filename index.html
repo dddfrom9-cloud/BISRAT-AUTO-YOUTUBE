@@ -95,9 +95,9 @@
       font-size: 15px;
     }
 
-    .grid-3 {
+    .grid-4 {
       display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-template-columns: 1.3fr 0.7fr 0.7fr 1fr;
       gap: 10px;
       margin-bottom: 12px;
     }
@@ -115,8 +115,8 @@
       margin-bottom: 10px;
     }
 
-    @media (max-width: 600px) {
-      .grid-3, .grid-2, .grid-3-stat {
+    @media (max-width: 640px) {
+      .grid-4, .grid-2, .grid-3-stat {
         grid-template-columns: 1fr;
       }
     }
@@ -190,6 +190,7 @@
       margin-top: 4px;
       font-size: 11.5px;
       color: var(--muted);
+      line-height: 1.45;
     }
 
     .stat-box {
@@ -271,7 +272,7 @@
     <header class="card topbar">
       <div>
         <h1>BISRAT AUTO YOUTUBE</h1>
-        <p class="subtitle">Queue: BISRAT_UPLOAD_QUEUE · Direct GitHub Actions Sync</p>
+        <p class="subtitle">Queue: BISRAT_UPLOAD_QUEUE · Direct Public Post · Multi-Channel Ready</p>
       </div>
       <div class="status-pills">
         <span class="pill" id="netPill">Online</span>
@@ -283,7 +284,7 @@
     <section class="card">
       <h2>Schedule &amp; Mode Controls</h2>
 
-      <div class="grid-3">
+      <div class="grid-4">
         <div>
           <label for="modeSelect">Mode</label>
           <select id="modeSelect">
@@ -298,6 +299,14 @@
         <div>
           <label for="minutesInput">Minutes</label>
           <input type="number" id="minutesInput" min="0" max="59" value="1" />
+        </div>
+        <div>
+          <label for="channelSlotSelect">Target Channel</label>
+          <select id="channelSlotSelect">
+            <option value="1">Channel 1 (Default Token)</option>
+            <option value="2">Channel 2 (TOKEN_2)</option>
+            <option value="3">Channel 3 (TOKEN_3)</option>
+          </select>
         </div>
       </div>
 
@@ -315,7 +324,7 @@
       </div>
 
       <div class="log-banner" id="actionStatus">Ready. Enter your token and tap Sync Now.</div>
-      <div class="hint">Cloud uploads run on GitHub Actions even when your phone is off or offline.</div>
+      <div class="hint">When the timer finishes, uploads go public directly (no +90m delay) and run on GitHub Actions even when your phone is off.</div>
     </section>
 
     <!-- LIVE STATUS & COUNTDOWN -->
@@ -343,8 +352,8 @@
           <div class="stat-value" id="nextRunText">Not scheduled</div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">Last Run / Upload</div>
-          <div class="stat-value" id="lastRunText">No runs recorded yet</div>
+          <div class="stat-label">Last Run / Active Channel</div>
+          <div class="stat-value" id="lastRunText">No runs recorded yet · Ch 1</div>
         </div>
       </div>
     </section>
@@ -375,10 +384,38 @@
       </div>
     </section>
 
-    <!-- YOUTUBE CHANNEL BINDING SECTION -->
+    <!-- GOOGLE SIGN-IN & LOAD YOUTUBE CHANNEL -->
+    <section class="card" id="googleChannelLoaderCard">
+      <div class="topbar" style="margin-bottom:12px;">
+        <div>
+          <h2 style="margin:0;">Connect YouTube Channel (Google Sign-In)</h2>
+          <p class="subtitle">Sign in with Google to load your channel automatically</p>
+        </div>
+        <span class="badge unbound" id="loadedChannelBadge">No Channel Loaded</span>
+      </div>
+
+      <div class="field-group">
+        <label for="gisClientIdInput">Google OAuth Client ID</label>
+        <input type="text" id="gisClientIdInput" placeholder="xxxx.apps.googleusercontent.com" />
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="googleSignInBtn">Sign in with Google &amp; Load Channel</button>
+        <select id="loadedChannelsSelect" style="max-width: 280px;">
+          <option value="">-- Loaded channels appear here --</option>
+        </select>
+        <button type="button" class="btn-secondary" id="connectSelectedChannelBtn">Connect Selected</button>
+      </div>
+
+      <div class="hint" id="googleLoaderStatus" style="margin-top:10px;">
+        Add <strong>https://dddfrom9-cloud.github.io</strong> to Authorized JavaScript origins in Google Cloud Console. For background GitHub Actions runs on Channel 2/3, save that channel's refresh token in <code>GOOGLE_REFRESH_TOKEN_2</code> / <code>GOOGLE_REFRESH_TOKEN_3</code> under GitHub Secrets.
+      </div>
+    </section>
+
+    <!-- YOUTUBE CHANNEL BINDING & QUICK LINKS -->
     <section class="card" id="ytChannelBindingCard">
       <div class="topbar" style="margin-bottom:12px;">
-        <h2 style="margin:0;">YouTube Channel Binding</h2>
+        <h2 style="margin:0;">Bound Channel Label &amp; Auth Shortcuts</h2>
         <span class="badge unbound" id="ytBindStatusBadge">Not Labelled</span>
       </div>
 
@@ -396,16 +433,17 @@
       <div class="btn-row">
         <button type="button" class="btn-primary" id="saveYtBindBtn">Save Channel Info</button>
         <a class="btn-link btn-secondary" id="openYtChannelBtn" href="https://studio.youtube.com" target="_blank" rel="noopener">Open YouTube Studio</a>
-        <a class="btn-link btn-danger" href="https://developers.google.com/oauthplayground/" target="_blank" rel="noopener">1. Re-Authorize OAuth</a>
-        <a class="btn-link btn-secondary" href="https://github.com/dddfrom9-cloud/bisrat-auto-youtube/settings/secrets/actions" target="_blank" rel="noopener">2. Update GOOGLE_REFRESH_TOKEN</a>
+        <a class="btn-link btn-danger" href="https://developers.google.com/oauthplayground/" target="_blank" rel="noopener">1. Get Refresh Token</a>
+        <a class="btn-link btn-secondary" href="https://github.com/dddfrom9-cloud/bisrat-auto-youtube/settings/secrets/actions" target="_blank" rel="noopener">2. GitHub Secrets</a>
       </div>
 
       <div class="hint" id="ytBindNote" style="margin-top:10px;">
-        Channel info is saved only on this phone. To switch which YouTube channel receives uploads, authorize that channel in Google OAuth Playground and update <strong>GOOGLE_REFRESH_TOKEN</strong> in GitHub Secrets.
+        Channel info is saved locally on this phone.
       </div>
     </section>
   </div>
 
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script>
     const OWNER = "dddfrom9-cloud";
     const REPO = "bisrat-auto-youtube";
@@ -413,11 +451,14 @@
     const WORKFLOW_FILE = "autopost.yml";
 
     const TOKEN_STORAGE_KEY = "bisrat_gh_token_v1";
+    const CLIENT_ID_KEY = "bisrat_google_client_id_v1";
+    const CONNECTED_YT_KEY = "bisrat_connected_yt_channel_v1";
     const YT_BIND_KEY = "bisrat_bound_youtube_channel_v1";
 
     const modeSelect = document.getElementById("modeSelect");
     const hoursInput = document.getElementById("hoursInput");
     const minutesInput = document.getElementById("minutesInput");
+    const channelSlotSelect = document.getElementById("channelSlotSelect");
     const tokenInput = document.getElementById("tokenInput");
     const actionStatus = document.getElementById("actionStatus");
 
@@ -432,9 +473,12 @@
     let currentSchedule = {
       active: false,
       mode: "once",
+      intervalHours: 0,
       intervalMinutes: 1,
-      nextRunAt: null
+      nextRunAt: null,
+      channel: 1
     };
+    let latestRunSummary = "No runs recorded yet";
     let scheduleFileSha = null;
     let deferredPrompt = null;
 
@@ -530,15 +574,32 @@
       return result.content ? result.content.sha : null;
     }
 
-    function computeNextRunIso() {
+    function computeSchedulePayload(activate) {
       const hrs = Math.max(0, parseInt(hoursInput.value || "0", 10) || 0);
-      const mins = Math.max(0, parseInt(minutesInput.value || "0", 10) || 0);
+      const mins = Math.max(0, Math.min(59, parseInt(minutesInput.value || "0", 10) || 0));
       const totalMins = Math.max(1, hrs * 60 + mins);
-      const nextDate = new Date(Date.now() + totalMins * 60000);
+      const ch = Math.max(1, parseInt(channelSlotSelect.value || "1", 10) || 1);
+      const mode = modeSelect.value === "repeat" ? "repeat" : "once";
+      const nowIso = new Date().toISOString();
+      const nextRunAt = activate
+        ? new Date(Date.now() + totalMins * 60000).toISOString()
+        : currentSchedule.nextRunAt;
+
       return {
-        totalMins,
-        nextRunAt: nextDate.toISOString()
+        active: activate ? true : Boolean(currentSchedule.active),
+        mode,
+        intervalHours: hrs,
+        intervalMinutes: mins,
+        intervalMinutesTotal: totalMins,
+        channel: ch,
+        nextRunAt,
+        updatedAt: nowIso
       };
+    }
+
+    function renderLastRunSummary() {
+      const ch = currentSchedule.channel || 1;
+      lastRunText.textContent = `${latestRunSummary} · Ch ${ch}`;
     }
 
     function renderScheduleUi() {
@@ -557,6 +618,7 @@
       } else {
         nextRunText.textContent = "Not scheduled";
       }
+      renderLastRunSummary();
     }
 
     function tickCountdown() {
@@ -628,7 +690,8 @@
       if (latestAutopost) {
         const statusLabel = latestAutopost.conclusion || latestAutopost.status || "unknown";
         const timeLabel = new Date(latestAutopost.updated_at || latestAutopost.created_at).toLocaleString();
-        lastRunText.textContent = `${statusLabel} • ${timeLabel}`;
+        latestRunSummary = `${statusLabel} • ${timeLabel}`;
+        renderLastRunSummary();
       }
 
       if (!runs.length) {
@@ -664,13 +727,19 @@
         if (schedRes.content) {
           const parsedSched = JSON.parse(schedRes.content);
           currentSchedule = {
+            ...currentSchedule,
             active: Boolean(parsedSched.active),
             mode: parsedSched.mode === "repeat" ? "repeat" : "once",
-            intervalMinutes: parsedSched.intervalMinutes || 1,
-            nextRunAt: parsedSched.nextRunAt || null
+            intervalHours: parsedSched.intervalHours ?? 0,
+            intervalMinutes: parsedSched.intervalMinutes ?? 1,
+            nextRunAt: parsedSched.nextRunAt || null,
+            channel: parsedSched.channel || 1
           };
           scheduleFileSha = schedRes.sha;
           modeSelect.value = currentSchedule.mode;
+          channelSlotSelect.value = String(currentSchedule.channel || 1);
+          if (parsedSched.intervalHours !== undefined) hoursInput.value = parsedSched.intervalHours;
+          if (parsedSched.intervalMinutes !== undefined) minutesInput.value = parsedSched.intervalMinutes;
         }
         renderScheduleUi();
         tickCountdown();
@@ -691,27 +760,25 @@
         const latest = await fetchRepoFile("schedule.json");
         if (latest.sha) scheduleFileSha = latest.sha;
 
-        const { totalMins, nextRunAt } = computeNextRunIso();
-        const mode = modeSelect.value === "repeat" ? "repeat" : "once";
-
+        const baseParsed = latest.content ? JSON.parse(latest.content) : {};
         const updated = {
-          active: activate ? true : currentSchedule.active,
-          mode,
-          intervalMinutes: totalMins,
-          nextRunAt: activate ? nextRunAt : currentSchedule.nextRunAt
+          ...baseParsed,
+          ...computeSchedulePayload(activate)
         };
 
         scheduleFileSha = await putRepoFile(
           "schedule.json",
           updated,
           scheduleFileSha,
-          activate ? "Start upload schedule via dashboard" : "Update schedule settings via dashboard"
+          activate ? "Start upload schedule via dashboard" : "Update schedule/channel settings via dashboard"
         );
 
         currentSchedule = updated;
         renderScheduleUi();
         tickCountdown();
-        setStatus(activate ? "Schedule started and saved to schedule.json." : "Schedule settings saved.");
+        setStatus(activate
+          ? `Schedule started for Channel ${updated.channel} (direct public post).`
+          : `Saved settings for Channel ${updated.channel}.`);
       } catch (err) {
         setStatus("Save error: " + err.message);
       }
@@ -722,10 +789,13 @@
         const latest = await fetchRepoFile("schedule.json");
         if (latest.sha) scheduleFileSha = latest.sha;
 
+        const baseParsed = latest.content ? JSON.parse(latest.content) : {};
         const updated = {
+          ...baseParsed,
           ...currentSchedule,
           active: false,
-          nextRunAt: null
+          nextRunAt: null,
+          updatedAt: new Date().toISOString()
         };
 
         scheduleFileSha = await putRepoFile(
@@ -770,14 +840,30 @@
       }
     }
 
-    // YouTube Channel Binding logic
-    (function initChannelBinding() {
+    // Google Sign-In Channel Loader + Channel Binding
+    (function initGoogleAndChannelUi() {
+      const clientIdInput = document.getElementById("gisClientIdInput");
+      const signInBtn = document.getElementById("googleSignInBtn");
+      const channelSelect = document.getElementById("loadedChannelsSelect");
+      const connectBtn = document.getElementById("connectSelectedChannelBtn");
+      const loadedBadge = document.getElementById("loadedChannelBadge");
+      const loaderStatus = document.getElementById("googleLoaderStatus");
+
       const nameInput = document.getElementById("ytChannelNameInput");
       const handleInput = document.getElementById("ytChannelHandleInput");
       const saveBindBtn = document.getElementById("saveYtBindBtn");
-      const badge = document.getElementById("ytBindStatusBadge");
-      const note = document.getElementById("ytBindNote");
+      const bindBadge = document.getElementById("ytBindStatusBadge");
+      const bindNote = document.getElementById("ytBindNote");
       const openChannelBtn = document.getElementById("openYtChannelBtn");
+
+      const savedClientId = localStorage.getItem(CLIENT_ID_KEY);
+      if (savedClientId) clientIdInput.value = savedClientId;
+
+      const savedConnected = JSON.parse(localStorage.getItem(CONNECTED_YT_KEY) || "null");
+      if (savedConnected && savedConnected.title) {
+        loadedBadge.textContent = "Connected: " + savedConnected.title;
+        loadedBadge.classList.remove("unbound");
+      }
 
       function buildChannelUrl(raw) {
         const val = (raw || "").trim();
@@ -798,17 +884,106 @@
         if (saved.handle) handleInput.value = saved.handle;
 
         if (saved.name || saved.handle) {
-          badge.textContent = "Bound: " + (saved.name || saved.handle);
-          badge.classList.remove("unbound");
+          bindBadge.textContent = "Bound: " + (saved.name || saved.handle);
+          bindBadge.classList.remove("unbound");
           openChannelBtn.href = buildChannelUrl(saved.handle);
           openChannelBtn.textContent = saved.handle ? "Open Channel" : "Open YouTube Studio";
         } else {
-          badge.textContent = "Not Labelled";
-          badge.classList.add("unbound");
+          bindBadge.textContent = "Not Labelled";
+          bindBadge.classList.add("unbound");
           openChannelBtn.href = "https://studio.youtube.com";
           openChannelBtn.textContent = "Open YouTube Studio";
         }
       }
+
+      async function fetchMyYouTubeChannels(accessToken) {
+        const url = "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true";
+        const res = await fetch(url, {
+          headers: { Authorization: "Bearer " + accessToken }
+        });
+        if (!res.ok) {
+          const txt = await res.text();
+          throw new Error("YouTube channels API failed (" + res.status + "): " + txt);
+        }
+        const data = await res.json();
+        return Array.isArray(data.items) ? data.items : [];
+      }
+
+      signInBtn.addEventListener("click", function () {
+        const clientId = clientIdInput.value.trim();
+        if (!clientId) {
+          loaderStatus.textContent = "Please enter your Google OAuth Client ID first.";
+          return;
+        }
+        if (!window.google || !google.accounts || !google.accounts.oauth2) {
+          loaderStatus.textContent = "Google Sign-In script is still loading. Try again in 2 seconds.";
+          return;
+        }
+
+        localStorage.setItem(CLIENT_ID_KEY, clientId);
+        loaderStatus.textContent = "Opening Google account sign-in...";
+
+        const tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope: [
+            "https://www.googleapis.com/auth/youtube.readonly",
+            "https://www.googleapis.com/auth/youtube.upload",
+            "https://www.googleapis.com/auth/drive.readonly"
+          ].join(" "),
+          callback: async function (tokenResponse) {
+            if (tokenResponse.error) {
+              loaderStatus.textContent = "Google sign-in error: " + tokenResponse.error;
+              return;
+            }
+            try {
+              loaderStatus.textContent = "Loading YouTube channels for signed-in Google account...";
+              const channels = await fetchMyYouTubeChannels(tokenResponse.access_token);
+              channelSelect.innerHTML = '<option value="">-- Choose a channel --</option>';
+
+              if (!channels.length) {
+                loaderStatus.textContent = "Signed in, but no YouTube channel was found on this account.";
+                return;
+              }
+
+              channels.forEach((ch) => {
+                const snippet = ch.snippet || {};
+                const title = snippet.title || ch.id;
+                const handle = snippet.customUrl || ch.id;
+                const opt = document.createElement("option");
+                opt.value = JSON.stringify({ id: ch.id, title, handle });
+                opt.textContent = `${title} (${handle})`;
+                channelSelect.appendChild(opt);
+              });
+
+              channelSelect.selectedIndex = 1;
+              loaderStatus.textContent = `Loaded ${channels.length} channel(s). Tap "Connect Selected".`;
+            } catch (err) {
+              loaderStatus.textContent = err.message;
+            }
+          }
+        });
+
+        tokenClient.requestAccessToken({ prompt: "select_account" });
+      });
+
+      connectBtn.addEventListener("click", function () {
+        if (!channelSelect.value) {
+          loaderStatus.textContent = "Please sign in and select a channel first.";
+          return;
+        }
+        const picked = JSON.parse(channelSelect.value);
+        localStorage.setItem(CONNECTED_YT_KEY, JSON.stringify(picked));
+        localStorage.setItem(YT_BIND_KEY, JSON.stringify({
+          name: picked.title,
+          handle: picked.handle,
+          updatedAt: new Date().toISOString()
+        }));
+
+        loadedBadge.textContent = "Connected: " + picked.title;
+        loadedBadge.classList.remove("unbound");
+        renderBinding();
+        loaderStatus.textContent = `Connected "${picked.title}" in dashboard. Select Channel 1/2/3 above and tap Save Settings to store the target channel in schedule.json.`;
+      });
 
       saveBindBtn.addEventListener("click", function () {
         const data = {
@@ -818,7 +993,7 @@
         };
         localStorage.setItem(YT_BIND_KEY, JSON.stringify(data));
         renderBinding();
-        note.textContent = "Saved channel label locally on this phone (" + new Date().toLocaleTimeString() + ").";
+        bindNote.textContent = "Saved channel label locally on this phone (" + new Date().toLocaleTimeString() + ").";
       });
 
       renderBinding();
@@ -830,7 +1005,10 @@
     document.getElementById("stopBtn").addEventListener("click", stopSchedule);
     document.getElementById("runNowBtn").addEventListener("click", triggerWorkflowNow);
     document.getElementById("syncBtn").addEventListener("click", syncAll);
-
+    channelSlotSelect.addEventListener("change", () => {
+      currentSchedule.channel = parseInt(channelSlotSelect.value || "1", 10) || 1;
+      renderLastRunSummary();
+    });
     tokenInput.addEventListener("change", () => saveToken());
 
     window.addEventListener("online", () => {
