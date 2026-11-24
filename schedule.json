@@ -1,11 +1,11 @@
 {
   "mode": "once",
-  "intervalHours": 6,
-  "intervalMinutes": 10,
+  "intervalHours": 0,
+  "intervalMinutes": 3,
   "active": true,
-  "nextRunAt": "2026-11-24T17:30:46.861Z",
+  "nextRunAt": "2026-11-24T11:24:06.713Z",
   "lastRunAt": null,
-  "updatedAt": "2026-11-24T11:20:46.860Z",
+  "updatedAt": "2026-11-24T11:21:06.713Z",
   "channel": 1,
-  "intervalMinutesTotal": 370
+  "intervalMinutesTotal": 3
 }
