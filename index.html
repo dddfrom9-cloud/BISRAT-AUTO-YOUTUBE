@@ -3,560 +3,872 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b1020" />
   <title>BISRAT AUTO YOUTUBE</title>
   <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b1020" />
   <style>
     :root {
       --bg: #0b1020;
-      --card: #131c31;
-      --card-2: #19243f;
-      --text: #f1f5f9;
+      --card: #141b2d;
+      --card-2: #0d1322;
+      --border: #24304a;
+      --text: #e2e8f0;
       --muted: #94a3b8;
-      --accent: #ef4444;
-      --accent-2: #38bdf8;
-      --ok: #22c55e;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --danger: #dc2626;
+      --success: #22c55e;
       --warn: #f59e0b;
-      --border: rgba(148, 163, 184, 0.16);
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      padding: 14px;
       background: var(--bg);
       color: var(--text);
-      padding: 14px;
-      line-height: 1.45;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .wrap { max-width: 720px; margin: 0 auto; display: grid; gap: 14px; }
-    .topbar {
-      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
-      background: var(--card); padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border);
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
-    h1 { margin: 0; font-size: 1.15rem; }
-    .sub { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
-    .badge {
-      padding: 5px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 600;
-      background: var(--card-2); border: 1px solid var(--border);
-    }
-    .online { color: var(--ok); }
-    .offline { color: var(--warn); }
+
     .card {
-      background: var(--card); border-radius: 14px; padding: 15px; border: 1px solid var(--border);
-      display: grid; gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
     }
-    .card h2 { margin: 0; font-size: 1rem; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-    @media (max-width: 520px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    label { display: grid; gap: 5px; font-size: 0.82rem; color: var(--muted); }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.16);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.35);
+    }
+
+    .pill.offline {
+      background: rgba(239, 68, 68, 0.16);
+      color: #f87171;
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    h2, h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .grid-3-stat {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .grid-3, .grid-2, .grid-3-stat {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
     input, select {
-      width: 100%; padding: 10px 12px; border-radius: 10px;
-      background: var(--card-2); color: var(--text); border: 1px solid var(--border); font-size: 0.95rem;
+      width: 100%;
+      background: var(--card-2);
+      border: 1px solid #283552;
+      border-radius: 8px;
+      padding: 10px 11px;
+      color: var(--text);
+      font-size: 13px;
     }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    button {
-      padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
-      font-weight: 600; font-size: 0.88rem; cursor: pointer; background: var(--card-2); color: var(--text);
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #38bdf8;
     }
-    button.primary { background: var(--accent); border-color: transparent; color: #fff; }
-    button.secondary { background: var(--accent-2); border-color: transparent; color: #061322; }
-    .stat { background: var(--card-2); padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
-    .stat-label { font-size: 0.75rem; color: var(--muted); }
-    .stat-val { font-size: 1rem; font-weight: 700; margin-top: 3px; word-break: break-word; }
-    .list { display: grid; gap: 8px; }
-    .item {
-      background: var(--card-2); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
-      font-size: 0.84rem; display: flex; justify-content: space-between; gap: 10px; align-items: center;
+
+    .field-group {
+      margin-bottom: 12px;
     }
-    .muted { color: var(--muted); font-size: 0.8rem; }
-    .status-msg { font-size: 0.84rem; color: var(--accent-2); min-height: 20px; }
-    a { color: var(--accent-2); text-decoration: none; }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button, a.btn-link {
+      border: none;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #fff;
+      background: #1e293b;
+    }
+
+    .btn-primary { background: var(--primary); }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-danger { background: var(--danger); }
+    .btn-secondary {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+    }
+
+    .log-banner {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #93c5fd;
+      min-height: 18px;
+    }
+
+    .hint {
+      margin-top: 4px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .stat-box {
+      background: var(--card-2);
+      border: 1px solid #1f2b44;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f8fafc;
+      word-break: break-word;
+    }
+
+    .list-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .list-item {
+      background: var(--card-2);
+      border: 1px solid #1f2b44;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .list-item-sub {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .badge-ok { color: #4ade80; font-weight: 700; }
+    .badge-fail { color: #f87171; font-weight: 700; }
+    .badge-warn { color: #fbbf24; font-weight: 700; }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.16);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.35);
+    }
+
+    .badge.unbound {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border-color: rgba(251, 191, 36, 0.35);
+    }
+
+    a.small-link {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="topbar">
+  <div class="container">
+    <!-- HEADER -->
+    <header class="card topbar">
       <div>
         <h1>BISRAT AUTO YOUTUBE</h1>
-        <div class="sub">Queue: BISRAT_UPLOAD_QUEUE · Direct GitHub Actions Sync</div>
+        <p class="subtitle">Queue: BISRAT_UPLOAD_QUEUE · Direct GitHub Actions Sync</p>
       </div>
-      <div class="btn-row">
-        <span id="netBadge" class="badge">Checking...</span>
-        <button id="installBtn" style="display:none;" class="secondary">Install App</button>
+      <div class="status-pills">
+        <span class="pill" id="netPill">Online</span>
+        <button type="button" class="btn-primary" id="installBtn" style="display:none;">Install App</button>
       </div>
-    </div>
+    </header>
 
-    <div class="card">
+    <!-- SCHEDULE & MODE CONTROLS -->
+    <section class="card">
       <h2>Schedule &amp; Mode Controls</h2>
+
       <div class="grid-3">
-        <label>
-          Mode
-          <select id="modeInput">
-            <option value="repeat">Repeat mode (continuous)</option>
+        <div>
+          <label for="modeSelect">Mode</label>
+          <select id="modeSelect">
             <option value="once">One-time mode (1 video then stop)</option>
+            <option value="repeat">Repeat mode (interval loop)</option>
           </select>
-        </label>
-        <label>
-          Hours
-          <input id="hoursInput" type="number" min="0" max="168" value="6" />
-        </label>
-        <label>
-          Minutes
-          <input id="minutesInput" type="number" min="0" max="59" value="0" />
-        </label>
+        </div>
+        <div>
+          <label for="hoursInput">Hours</label>
+          <input type="number" id="hoursInput" min="0" max="168" value="0" />
+        </div>
+        <div>
+          <label for="minutesInput">Minutes</label>
+          <input type="number" id="minutesInput" min="0" max="59" value="1" />
+        </div>
       </div>
 
-      <label>
-        GitHub Fine-Grained Token (stored only on this phone, never in repo)
-        <input id="tokenInput" type="password" placeholder="github_pat_..." autocomplete="off" />
-      </label>
+      <div class="field-group">
+        <label for="tokenInput">GitHub Fine-Grained Token (stored only on this phone, never in repo)</label>
+        <input type="password" id="tokenInput" placeholder="github_pat_..." autocomplete="off" />
+      </div>
 
       <div class="btn-row">
-        <button id="startBtn" class="primary">Start Schedule</button>
-        <button id="saveBtn">Save Settings</button>
-        <button id="stopBtn">Stop Schedule</button>
-        <button id="runNowBtn" class="secondary">Run Next Now</button>
-        <button id="syncBtn">Sync Now</button>
+        <button type="button" class="btn-danger" id="startBtn">Start Schedule</button>
+        <button type="button" class="btn-secondary" id="saveBtn">Save Settings</button>
+        <button type="button" class="btn-secondary" id="stopBtn">Stop Schedule</button>
+        <button type="button" class="btn-primary" id="runNowBtn">Run Next Now</button>
+        <button type="button" class="btn-primary" id="syncBtn">Sync Now</button>
       </div>
 
-      <div id="statusMsg" class="status-msg"></div>
-      <div id="pendingBanner" class="muted"></div>
-    </div>
+      <div class="log-banner" id="actionStatus">Ready. Enter your token and tap Sync Now.</div>
+      <div class="hint">Cloud uploads run on GitHub Actions even when your phone is off or offline.</div>
+    </section>
 
-    <div class="card">
+    <!-- LIVE STATUS & COUNTDOWN -->
+    <section class="card">
       <h2>Live Status &amp; Countdown</h2>
-      <div class="grid-3">
-        <div class="stat">
+
+      <div class="grid-3-stat">
+        <div class="stat-box">
           <div class="stat-label">Schedule State</div>
-          <div id="activeVal" class="stat-val">Stopped</div>
+          <div class="stat-value" id="scheduleStateText">Stopped</div>
         </div>
-        <div class="stat">
+        <div class="stat-box">
           <div class="stat-label">Active Mode</div>
-          <div id="modeVal" class="stat-val">Repeat</div>
+          <div class="stat-value" id="activeModeText">One-Time</div>
         </div>
-        <div class="stat">
+        <div class="stat-box">
           <div class="stat-label">Countdown to Next Run</div>
-          <div id="countdownVal" class="stat-val">--:--:--</div>
+          <div class="stat-value" id="countdownText">--:--:--</div>
         </div>
       </div>
+
       <div class="grid-2">
-        <div class="stat">
+        <div class="stat-box">
           <div class="stat-label">Next Scheduled Run (Local Time)</div>
-          <div id="nextRunVal" class="stat-val">Not scheduled</div>
+          <div class="stat-value" id="nextRunText">Not scheduled</div>
         </div>
-        <div class="stat">
+        <div class="stat-box">
           <div class="stat-label">Last Run / Upload</div>
-          <div id="lastRunVal" class="stat-val">No recent run data</div>
+          <div class="stat-value" id="lastRunText">No runs recorded yet</div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="card">
+    <!-- UPLOAD HISTORY -->
+    <section class="card">
       <h2>Upload History (state.json) &amp; Errors</h2>
-      <div id="historyList" class="list">
-        <div class="muted">Tap Sync Now to load state.json history.</div>
+      <div class="list-box" id="historyList">
+        <div class="list-item">
+          <div>
+            <div>No uploaded items loaded yet</div>
+            <div class="list-item-sub">Tap Sync Now to read state.json from GitHub</div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="card">
+    <!-- RECENT GITHUB ACTIONS RUNS -->
+    <section class="card">
       <h2>Recent GitHub Actions Runs</h2>
-      <div id="runsList" class="list">
-        <div class="muted">No workflow runs loaded yet.</div>
+      <div class="list-box" id="runsList">
+        <div class="list-item">
+          <div>
+            <div>No workflow runs loaded yet</div>
+            <div class="list-item-sub">Tap Sync Now to fetch recent runs</div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- YOUTUBE CHANNEL BINDING SECTION -->
+    <section class="card" id="ytChannelBindingCard">
+      <div class="topbar" style="margin-bottom:12px;">
+        <h2 style="margin:0;">YouTube Channel Binding</h2>
+        <span class="badge unbound" id="ytBindStatusBadge">Not Labelled</span>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div>
+          <label for="ytChannelNameInput">Bound Channel Name</label>
+          <input type="text" id="ytChannelNameInput" placeholder="e.g. BISRAT TV" />
+        </div>
+        <div>
+          <label for="ytChannelHandleInput">Channel Handle or URL</label>
+          <input type="text" id="ytChannelHandleInput" placeholder="e.g. @BisratChannel or https://youtube.com/..." />
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="saveYtBindBtn">Save Channel Info</button>
+        <a class="btn-link btn-secondary" id="openYtChannelBtn" href="https://studio.youtube.com" target="_blank" rel="noopener">Open YouTube Studio</a>
+        <a class="btn-link btn-danger" href="https://developers.google.com/oauthplayground/" target="_blank" rel="noopener">1. Re-Authorize OAuth</a>
+        <a class="btn-link btn-secondary" href="https://github.com/dddfrom9-cloud/bisrat-auto-youtube/settings/secrets/actions" target="_blank" rel="noopener">2. Update GOOGLE_REFRESH_TOKEN</a>
+      </div>
+
+      <div class="hint" id="ytBindNote" style="margin-top:10px;">
+        Channel info is saved only on this phone. To switch which YouTube channel receives uploads, authorize that channel in Google OAuth Playground and update <strong>GOOGLE_REFRESH_TOKEN</strong> in GitHub Secrets.
+      </div>
+    </section>
   </div>
 
   <script>
     const OWNER = "dddfrom9-cloud";
     const REPO = "bisrat-auto-youtube";
     const BRANCH = "main";
-    const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}`;
-    const STORAGE_KEY = "bisrat_auto_yt_direct_v1";
-    let deferredInstallPrompt = null;
+    const WORKFLOW_FILE = "autopost.yml";
 
-    const defaultState = {
-      token: "",
-      schedule: {
-        mode: "repeat",
-        intervalHours: 6,
-        intervalMinutes: 0,
-        active: false,
-        nextRunAt: null,
-        lastRunAt: null,
-        updatedAt: null
-      },
-      pendingSchedule: null,
-      uploadedState: {},
-      runs: []
+    const TOKEN_STORAGE_KEY = "bisrat_gh_token_v1";
+    const YT_BIND_KEY = "bisrat_bound_youtube_channel_v1";
+
+    const modeSelect = document.getElementById("modeSelect");
+    const hoursInput = document.getElementById("hoursInput");
+    const minutesInput = document.getElementById("minutesInput");
+    const tokenInput = document.getElementById("tokenInput");
+    const actionStatus = document.getElementById("actionStatus");
+
+    const scheduleStateText = document.getElementById("scheduleStateText");
+    const activeModeText = document.getElementById("activeModeText");
+    const countdownText = document.getElementById("countdownText");
+    const nextRunText = document.getElementById("nextRunText");
+    const lastRunText = document.getElementById("lastRunText");
+    const historyList = document.getElementById("historyList");
+    const runsList = document.getElementById("runsList");
+
+    let currentSchedule = {
+      active: false,
+      mode: "once",
+      intervalMinutes: 1,
+      nextRunAt: null
     };
+    let scheduleFileSha = null;
+    let deferredPrompt = null;
 
-    function loadLocal() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredClone(defaultState);
-        const parsed = JSON.parse(raw);
-        return {
-          ...structuredClone(defaultState),
-          ...parsed,
-          schedule: { ...defaultState.schedule, ...(parsed.schedule || {}) }
-        };
-      } catch {
-        return structuredClone(defaultState);
+    function setStatus(msg) {
+      actionStatus.textContent = msg;
+    }
+
+    function getToken() {
+      return (tokenInput.value || localStorage.getItem(TOKEN_STORAGE_KEY) || "").trim();
+    }
+
+    function saveToken() {
+      const t = tokenInput.value.trim();
+      if (t) {
+        localStorage.setItem(TOKEN_STORAGE_KEY, t);
       }
+      return t;
     }
 
-    let app = loadLocal();
-
-    function saveLocal() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
-      renderPendingBanner();
-    }
-
-    function setStatus(msg, isError = false) {
-      const el = document.getElementById("statusMsg");
-      el.textContent = msg;
-      el.style.color = isError ? "#ef4444" : "#38bdf8";
-    }
-
-    function updateNetworkBadge() {
-      const badge = document.getElementById("netBadge");
-      if (navigator.onLine) {
-        badge.textContent = "Online";
-        badge.className = "badge online";
-      } else {
-        badge.textContent = "Offline (Queued locally)";
-        badge.className = "badge offline";
-      }
-    }
-
-    function renderPendingBanner() {
-      const el = document.getElementById("pendingBanner");
-      el.textContent = app.pendingSchedule
-        ? "Offline change queued: will sync to GitHub automatically when internet returns."
-        : "Cloud uploads run on GitHub Actions even when your phone is off or offline.";
-    }
-
-    function ghHeaders(includeAuth = true) {
+    function authHeaders(token) {
       const headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28"
       };
-      if (includeAuth && app.token) {
-        headers["Authorization"] = `Bearer ${app.token}`;
+      if (token) {
+        headers["Authorization"] = "Bearer " + token;
       }
       return headers;
     }
 
-    function computeNextRunIso(hours, minutes) {
-      const totalMs = (Math.max(0, Number(hours) || 0) * 60 + Math.max(0, Number(minutes) || 0)) * 60000;
-      return new Date(Date.now() + totalMs).toISOString();
+    function encodeBase64Utf8(str) {
+      const bytes = new TextEncoder().encode(str);
+      let bin = "";
+      for (let i = 0; i < bytes.length; i++) {
+        bin += String.fromCharCode(bytes[i]);
+      }
+      return btoa(bin);
     }
 
-    function readInputs() {
-      app.token = document.getElementById("tokenInput").value.trim();
-      const mode = document.getElementById("modeInput").value;
-      const h = Math.max(0, parseInt(document.getElementById("hoursInput").value, 10) || 0);
-      const m = Math.min(59, Math.max(0, parseInt(document.getElementById("minutesInput").value, 10) || 0));
-      document.getElementById("hoursInput").value = h;
-      document.getElementById("minutesInput").value = m;
-      app.schedule.mode = mode;
-      app.schedule.intervalHours = h;
-      app.schedule.intervalMinutes = m;
-      app.schedule.updatedAt = new Date().toISOString();
+    function decodeBase64Utf8(b64) {
+      const clean = (b64 || "").replace(/\n/g, "");
+      const bin = atob(clean);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) {
+        bytes[i] = bin.charCodeAt(i);
+      }
+      return new TextDecoder().decode(bytes);
     }
 
-    function writeInputs() {
-      document.getElementById("tokenInput").value = app.token || "";
-      document.getElementById("modeInput").value = app.schedule.mode || "repeat";
-      document.getElementById("hoursInput").value = app.schedule.intervalHours ?? 6;
-      document.getElementById("minutesInput").value = app.schedule.intervalMinutes ?? 0;
+    async function fetchRepoFile(path) {
+      const token = getToken();
+      const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}&t=${Date.now()}`;
+      const res = await fetch(url, { headers: authHeaders(token) });
+      if (res.status === 404) {
+        return { content: null, sha: null };
+      }
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`GitHub read ${path} failed (${res.status}): ${errText}`);
+      }
+      const data = await res.json();
+      const text = decodeBase64Utf8(data.content || "");
+      return { content: text, sha: data.sha };
     }
 
-    function formatDuration(ms) {
-      if (ms <= 0) return "Due now (waiting for runner)";
-      const totalSec = Math.floor(ms / 1000);
-      const h = Math.floor(totalSec / 3600);
-      const m = Math.floor((totalSec % 3600) / 60);
-      const s = totalSec % 60;
-      return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
+    async function putRepoFile(path, contentObj, sha, commitMessage) {
+      const token = saveToken();
+      if (!token) {
+        throw new Error("Please enter your GitHub Fine-Grained Token first.");
+      }
+      const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`;
+      const body = {
+        message: commitMessage,
+        content: encodeBase64Utf8(JSON.stringify(contentObj, null, 2) + "\n"),
+        branch: BRANCH
+      };
+      if (sha) {
+        body.sha = sha;
+      }
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: {
+          ...authHeaders(token),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`GitHub write ${path} failed (${res.status}): ${errText}`);
+      }
+      const result = await res.json();
+      return result.content ? result.content.sha : null;
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;");
+    function computeNextRunIso() {
+      const hrs = Math.max(0, parseInt(hoursInput.value || "0", 10) || 0);
+      const mins = Math.max(0, parseInt(minutesInput.value || "0", 10) || 0);
+      const totalMins = Math.max(1, hrs * 60 + mins);
+      const nextDate = new Date(Date.now() + totalMins * 60000);
+      return {
+        totalMins,
+        nextRunAt: nextDate.toISOString()
+      };
     }
 
-    function renderUI() {
-      document.getElementById("activeVal").textContent = app.schedule.active ? "Active" : "Stopped";
-      document.getElementById("modeVal").textContent = app.schedule.mode === "once" ? "One-Time" : "Repeat";
+    function renderScheduleUi() {
+      const isActive = Boolean(currentSchedule.active);
+      const mode = currentSchedule.mode === "repeat" ? "repeat" : "once";
 
-      if (app.schedule.active && app.schedule.nextRunAt) {
-        const nextMs = new Date(app.schedule.nextRunAt).getTime();
-        document.getElementById("nextRunVal").textContent = new Date(nextMs).toLocaleString();
-        document.getElementById("countdownVal").textContent = formatDuration(nextMs - Date.now());
+      scheduleStateText.textContent = isActive ? "Active" : "Stopped";
+      scheduleStateText.className = "stat-value " + (isActive ? "badge-ok" : "");
+      activeModeText.textContent = mode === "repeat" ? "Repeat" : "One-Time";
+
+      if (isActive && currentSchedule.nextRunAt) {
+        const target = new Date(currentSchedule.nextRunAt);
+        nextRunText.textContent = isNaN(target.getTime())
+          ? currentSchedule.nextRunAt
+          : target.toLocaleString();
       } else {
-        document.getElementById("nextRunVal").textContent = "Not scheduled";
-        document.getElementById("countdownVal").textContent = "--:--:--";
-      }
-
-      const lastRun = app.runs && app.runs.length ? app.runs[0] : null;
-      document.getElementById("lastRunVal").textContent = lastRun
-        ? `${lastRun.conclusion || lastRun.status} · ${new Date(lastRun.createdAt).toLocaleString()}`
-        : (app.schedule.lastRunAt ? new Date(app.schedule.lastRunAt).toLocaleString() : "No recent run data");
-
-      const historyEl = document.getElementById("historyList");
-      const stateObj = app.uploadedState || {};
-      const entries = [];
-
-      if (Array.isArray(stateObj.uploaded_ids)) {
-        stateObj.uploaded_ids.forEach((id) => entries.push({ id, note: "Uploaded" }));
-      } else if (stateObj.uploaded && typeof stateObj.uploaded === "object") {
-        Object.entries(stateObj.uploaded).forEach(([id, info]) => {
-          entries.push({ id, note: typeof info === "string" ? info : (info?.title || "Uploaded") });
-        });
-      } else if (typeof stateObj === "object") {
-        Object.entries(stateObj).forEach(([k, v]) => {
-          if (k !== "last_error" && k !== "errors") {
-            entries.push({ id: k, note: typeof v === "string" ? v : JSON.stringify(v) });
-          }
-        });
-      }
-
-      historyEl.innerHTML = "";
-      const errNote = stateObj.last_error || (Array.isArray(stateObj.errors) && stateObj.errors.join("; "));
-      if (errNote) {
-        const errDiv = document.createElement("div");
-        errDiv.className = "item";
-        errDiv.style.borderColor = "rgba(239, 68, 68, 0.5)";
-        errDiv.innerHTML = `<span><strong>Error:</strong> ${escapeHtml(errNote)}</span>`;
-        historyEl.appendChild(errDiv);
-      }
-
-      if (!entries.length) {
-        historyEl.innerHTML += `<div class="muted">No uploaded file IDs cached yet.</div>`;
-      } else {
-        entries.slice(-15).reverse().forEach((item) => {
-          const div = document.createElement("div");
-          div.className = "item";
-          div.innerHTML = `<span><strong>${escapeHtml(item.id)}</strong></span><span class="muted">${escapeHtml(item.note)}</span>`;
-          historyEl.appendChild(div);
-        });
-      }
-
-      const runsEl = document.getElementById("runsList");
-      runsEl.innerHTML = "";
-      if (!app.runs || !app.runs.length) {
-        runsEl.innerHTML = `<div class="muted">No workflow runs loaded yet.</div>`;
-      } else {
-        app.runs.slice(0, 6).forEach((run) => {
-          const div = document.createElement("div");
-          div.className = "item";
-          const label = `${run.name || "Workflow"} — ${run.conclusion || run.status}`;
-          div.innerHTML = `<span>${escapeHtml(label)}<br><span class="muted">${new Date(run.createdAt).toLocaleString()}</span></span>` +
-            (run.url ? `<a href="${escapeHtml(run.url)}" target="_blank" rel="noopener">Log</a>` : "");
-          runsEl.appendChild(div);
-        });
+        nextRunText.textContent = "Not scheduled";
       }
     }
 
-    async function pushScheduleToGitHub(scheduleObj) {
-      if (!app.token) {
-        setStatus("Saved locally. Enter your GitHub Fine-Grained Token above to sync.", true);
+    function tickCountdown() {
+      if (!currentSchedule.active || !currentSchedule.nextRunAt) {
+        countdownText.textContent = "--:--:--";
         return;
       }
-      if (!navigator.onLine) {
-        app.pendingSchedule = scheduleObj;
-        saveLocal();
-        setStatus("Offline: schedule change queued and will sync when internet returns.");
+      const diffMs = new Date(currentSchedule.nextRunAt).getTime() - Date.now();
+      if (isNaN(diffMs)) {
+        countdownText.textContent = "--:--:--";
+        return;
+      }
+      if (diffMs <= 0) {
+        countdownText.textContent = "00:00:00 (Due)";
+        return;
+      }
+      const totalSec = Math.floor(diffMs / 1000);
+      const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
+      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
+      const s = String(totalSec % 60).padStart(2, "0");
+      countdownText.textContent = `${h}:${m}:${s}`;
+    }
+
+    function renderHistory(stateObj) {
+      const uploaded = Array.isArray(stateObj.uploaded) ? stateObj.uploaded : [];
+      const ytMap = stateObj.youtube_ids && typeof stateObj.youtube_ids === "object"
+        ? stateObj.youtube_ids
+        : {};
+
+      if (!uploaded.length && !Object.keys(ytMap).length) {
+        historyList.innerHTML = `
+          <div class="list-item">
+            <div>
+              <div>No uploaded videos in state.json yet</div>
+              <div class="list-item-sub">Drive IDs and YouTube IDs appear here after uploads</div>
+            </div>
+          </div>`;
         return;
       }
 
+      const ids = uploaded.length ? uploaded : Object.keys(ytMap);
+      historyList.innerHTML = ids.map((driveId) => {
+        const ytId = ytMap[driveId];
+        const ytLink = ytId
+          ? `<a class="small-link" href="https://youtu.be/${encodeURIComponent(ytId)}" target="_blank" rel="noopener">YouTube: ${ytId}</a>`
+          : `<span class="list-item-sub">Pending / No YT ID</span>`;
+        return `
+          <div class="list-item">
+            <div>
+              <div><strong>Drive ID:</strong> ${driveId}</div>
+              <div class="list-item-sub">${ytId ? "Recorded in state.json" : "Recorded in uploaded list"}</div>
+            </div>
+            <div>${ytLink}</div>
+          </div>`;
+      }).join("");
+    }
+
+    async function loadRecentRuns() {
+      const token = getToken();
+      const url = `https://api.github.com/repos/${OWNER}/${REPO}/actions/runs?per_page=8&t=${Date.now()}`;
+      const res = await fetch(url, { headers: authHeaders(token) });
+      if (!res.ok) {
+        throw new Error(`Runs fetch failed (${res.status})`);
+      }
+      const data = await res.json();
+      const runs = Array.isArray(data.workflow_runs) ? data.workflow_runs : [];
+
+      const latestAutopost = runs.find((r) => (r.name || "").toUpperCase().includes("BISRAT") || (r.path || "").includes(WORKFLOW_FILE));
+      if (latestAutopost) {
+        const statusLabel = latestAutopost.conclusion || latestAutopost.status || "unknown";
+        const timeLabel = new Date(latestAutopost.updated_at || latestAutopost.created_at).toLocaleString();
+        lastRunText.textContent = `${statusLabel} • ${timeLabel}`;
+      }
+
+      if (!runs.length) {
+        runsList.innerHTML = `<div class="list-item"><div>No recent workflow runs found.</div></div>`;
+        return;
+      }
+
+      runsList.innerHTML = runs.map((run) => {
+        const concl = run.conclusion || run.status || "queued";
+        let cls = "badge-warn";
+        if (concl === "success") cls = "badge-ok";
+        else if (concl === "failure" || concl === "cancelled") cls = "badge-fail";
+        const when = new Date(run.created_at).toLocaleString();
+        return `
+          <div class="list-item">
+            <div>
+              <div><strong>${run.name || "Workflow"}</strong> — <span class="${cls}">${concl}</span></div>
+              <div class="list-item-sub">${when}</div>
+            </div>
+            <a class="small-link" href="${run.html_url}" target="_blank" rel="noopener">Log</a>
+          </div>`;
+      }).join("");
+    }
+
+    async function syncAll() {
+      setStatus("Syncing schedule.json, state.json, and Actions runs...");
       try {
-        const getRes = await fetch(`${API_BASE}/contents/schedule.json?ref=${BRANCH}`, {
-          headers: ghHeaders(true),
-          cache: "no-store"
-        });
-        const existing = getRes.ok ? await getRes.json() : null;
-        const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(scheduleObj, null, 2))));
-
-        const body = {
-          message: "Update schedule from BISRAT AUTO YOUTUBE app",
-          content: encoded,
-          branch: BRANCH
-        };
-        if (existing?.sha) body.sha = existing.sha;
-
-        const putRes = await fetch(`${API_BASE}/contents/schedule.json`, {
-          method: "PUT",
-          headers: { ...ghHeaders(true), "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
-
-        if (!putRes.ok) {
-          const errData = await putRes.json().catch(() => ({}));
-          throw new Error(errData.message || `HTTP ${putRes.status}`);
-        }
-
-        app.pendingSchedule = null;
-        saveLocal();
-        setStatus("Schedule saved directly to GitHub (schedule.json updated).");
-      } catch (err) {
-        app.pendingSchedule = scheduleObj;
-        saveLocal();
-        setStatus(`Sync failed (${err.message}). Queued locally for retry.`, true);
-      }
-    }
-
-    async function syncFromGitHub() {
-      readInputs();
-      saveLocal();
-      if (!navigator.onLine) {
-        setStatus("Offline: displaying cached settings and state.json history.");
-        return;
-      }
-
-      if (app.pendingSchedule && app.token) {
-        await pushScheduleToGitHub(app.pendingSchedule);
-      }
-
-      try {
-        const headers = ghHeaders(Boolean(app.token));
-        const [schedRes, stateRes, runsRes] = await Promise.all([
-          fetch(`${API_BASE}/contents/schedule.json?ref=${BRANCH}`, { headers, cache: "no-store" }),
-          fetch(`${API_BASE}/contents/state.json?ref=${BRANCH}`, { headers, cache: "no-store" }),
-          fetch(`${API_BASE}/actions/runs?per_page=8`, { headers, cache: "no-store" })
+        const [schedRes, stateRes] = await Promise.all([
+          fetchRepoFile("schedule.json"),
+          fetchRepoFile("state.json")
         ]);
 
-        if (schedRes.ok && !app.pendingSchedule) {
-          const sJson = await schedRes.json();
-          const parsedSched = JSON.parse(atob(sJson.content.replace(/\n/g, "")));
-          app.schedule = { ...app.schedule, ...parsedSched };
-          writeInputs();
+        if (schedRes.content) {
+          const parsedSched = JSON.parse(schedRes.content);
+          currentSchedule = {
+            active: Boolean(parsedSched.active),
+            mode: parsedSched.mode === "repeat" ? "repeat" : "once",
+            intervalMinutes: parsedSched.intervalMinutes || 1,
+            nextRunAt: parsedSched.nextRunAt || null
+          };
+          scheduleFileSha = schedRes.sha;
+          modeSelect.value = currentSchedule.mode;
+        }
+        renderScheduleUi();
+        tickCountdown();
+
+        if (stateRes.content) {
+          renderHistory(JSON.parse(stateRes.content));
         }
 
-        if (stateRes.ok) {
-          const stJson = await stateRes.json();
-          app.uploadedState = JSON.parse(atob(stJson.content.replace(/\n/g, "")));
-        }
-
-        if (runsRes.ok) {
-          const rJson = await runsRes.json();
-          app.runs = (rJson.workflow_runs || []).map((r) => ({
-            id: r.id,
-            name: r.name,
-            status: r.status,
-            conclusion: r.conclusion,
-            createdAt: r.created_at,
-            url: r.html_url
-          }));
-        }
-
-        saveLocal();
-        renderUI();
-        setStatus("Synced latest schedule, state.json, and workflow runs from GitHub.");
+        await loadRecentRuns();
+        setStatus("Synced at " + new Date().toLocaleTimeString());
       } catch (err) {
-        setStatus(`Sync error: ${err.message}`, true);
+        setStatus("Sync error: " + err.message);
       }
     }
 
-    document.getElementById("startBtn").addEventListener("click", async () => {
-      readInputs();
-      app.schedule.active = true;
-      app.schedule.nextRunAt = computeNextRunIso(app.schedule.intervalHours, app.schedule.intervalMinutes);
-      saveLocal();
-      renderUI();
-      await pushScheduleToGitHub(app.schedule);
-    });
-
-    document.getElementById("saveBtn").addEventListener("click", async () => {
-      readInputs();
-      if (app.schedule.active) {
-        app.schedule.nextRunAt = computeNextRunIso(app.schedule.intervalHours, app.schedule.intervalMinutes);
-      }
-      saveLocal();
-      renderUI();
-      await pushScheduleToGitHub(app.schedule);
-    });
-
-    document.getElementById("stopBtn").addEventListener("click", async () => {
-      readInputs();
-      app.schedule.active = false;
-      app.schedule.nextRunAt = null;
-      saveLocal();
-      renderUI();
-      await pushScheduleToGitHub(app.schedule);
-    });
-
-    document.getElementById("runNowBtn").addEventListener("click", async () => {
-      readInputs();
-      saveLocal();
-      if (!app.token) {
-        setStatus("Enter your GitHub Fine-Grained Token first to trigger uploads.", true);
-        return;
-      }
-      if (!navigator.onLine) {
-        setStatus("Cannot trigger workflow while offline.", true);
-        return;
-      }
+    async function saveScheduleState(activate) {
       try {
-        const res = await fetch(`${API_BASE}/actions/workflows/autopost.yml/dispatches`, {
+        const latest = await fetchRepoFile("schedule.json");
+        if (latest.sha) scheduleFileSha = latest.sha;
+
+        const { totalMins, nextRunAt } = computeNextRunIso();
+        const mode = modeSelect.value === "repeat" ? "repeat" : "once";
+
+        const updated = {
+          active: activate ? true : currentSchedule.active,
+          mode,
+          intervalMinutes: totalMins,
+          nextRunAt: activate ? nextRunAt : currentSchedule.nextRunAt
+        };
+
+        scheduleFileSha = await putRepoFile(
+          "schedule.json",
+          updated,
+          scheduleFileSha,
+          activate ? "Start upload schedule via dashboard" : "Update schedule settings via dashboard"
+        );
+
+        currentSchedule = updated;
+        renderScheduleUi();
+        tickCountdown();
+        setStatus(activate ? "Schedule started and saved to schedule.json." : "Schedule settings saved.");
+      } catch (err) {
+        setStatus("Save error: " + err.message);
+      }
+    }
+
+    async function stopSchedule() {
+      try {
+        const latest = await fetchRepoFile("schedule.json");
+        if (latest.sha) scheduleFileSha = latest.sha;
+
+        const updated = {
+          ...currentSchedule,
+          active: false,
+          nextRunAt: null
+        };
+
+        scheduleFileSha = await putRepoFile(
+          "schedule.json",
+          updated,
+          scheduleFileSha,
+          "Stop upload schedule via dashboard"
+        );
+
+        currentSchedule = updated;
+        renderScheduleUi();
+        tickCountdown();
+        setStatus("Schedule stopped.");
+      } catch (err) {
+        setStatus("Stop error: " + err.message);
+      }
+    }
+
+    async function triggerWorkflowNow() {
+      try {
+        const token = saveToken();
+        if (!token) {
+          throw new Error("Please enter your GitHub Fine-Grained Token first.");
+        }
+        setStatus("Triggering autopost.yml on GitHub Actions...");
+        const url = `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`;
+        const res = await fetch(url, {
           method: "POST",
-          headers: { ...ghHeaders(true), "Content-Type": "application/json" },
+          headers: {
+            ...authHeaders(token),
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify({ ref: BRANCH })
         });
         if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          throw new Error(errData.message || `HTTP ${res.status}`);
+          const errText = await res.text();
+          throw new Error(`Dispatch failed (${res.status}): ${errText}`);
         }
-        app.schedule.lastRunAt = new Date().toISOString();
-        saveLocal();
-        renderUI();
         setStatus("Triggered autopost.yml on GitHub Actions! Tap Sync Now in 30s to see run status.");
       } catch (err) {
-        setStatus(`Trigger failed: ${err.message}`, true);
+        setStatus("Run error: " + err.message);
       }
-    });
+    }
 
-    document.getElementById("syncBtn").addEventListener("click", syncFromGitHub);
+    // YouTube Channel Binding logic
+    (function initChannelBinding() {
+      const nameInput = document.getElementById("ytChannelNameInput");
+      const handleInput = document.getElementById("ytChannelHandleInput");
+      const saveBindBtn = document.getElementById("saveYtBindBtn");
+      const badge = document.getElementById("ytBindStatusBadge");
+      const note = document.getElementById("ytBindNote");
+      const openChannelBtn = document.getElementById("openYtChannelBtn");
+
+      function buildChannelUrl(raw) {
+        const val = (raw || "").trim();
+        if (!val) return "https://studio.youtube.com";
+        if (val.startsWith("http://") || val.startsWith("https://")) return val;
+        if (val.startsWith("@")) return "https://www.youtube.com/" + val;
+        return "https://www.youtube.com/@" + val.replace(/^@+/, "");
+      }
+
+      function renderBinding() {
+        let saved = {};
+        try {
+          saved = JSON.parse(localStorage.getItem(YT_BIND_KEY) || "{}");
+        } catch (e) {
+          saved = {};
+        }
+        if (saved.name) nameInput.value = saved.name;
+        if (saved.handle) handleInput.value = saved.handle;
+
+        if (saved.name || saved.handle) {
+          badge.textContent = "Bound: " + (saved.name || saved.handle);
+          badge.classList.remove("unbound");
+          openChannelBtn.href = buildChannelUrl(saved.handle);
+          openChannelBtn.textContent = saved.handle ? "Open Channel" : "Open YouTube Studio";
+        } else {
+          badge.textContent = "Not Labelled";
+          badge.classList.add("unbound");
+          openChannelBtn.href = "https://studio.youtube.com";
+          openChannelBtn.textContent = "Open YouTube Studio";
+        }
+      }
+
+      saveBindBtn.addEventListener("click", function () {
+        const data = {
+          name: nameInput.value.trim(),
+          handle: handleInput.value.trim(),
+          updatedAt: new Date().toISOString()
+        };
+        localStorage.setItem(YT_BIND_KEY, JSON.stringify(data));
+        renderBinding();
+        note.textContent = "Saved channel label locally on this phone (" + new Date().toLocaleTimeString() + ").";
+      });
+
+      renderBinding();
+    })();
+
+    // Events & PWA
+    document.getElementById("startBtn").addEventListener("click", () => saveScheduleState(true));
+    document.getElementById("saveBtn").addEventListener("click", () => saveScheduleState(false));
+    document.getElementById("stopBtn").addEventListener("click", stopSchedule);
+    document.getElementById("runNowBtn").addEventListener("click", triggerWorkflowNow);
+    document.getElementById("syncBtn").addEventListener("click", syncAll);
+
+    tokenInput.addEventListener("change", () => saveToken());
 
     window.addEventListener("online", () => {
-      updateNetworkBadge();
-      if (app.pendingSchedule) syncFromGitHub();
+      const p = document.getElementById("netPill");
+      p.textContent = "Online";
+      p.classList.remove("offline");
     });
-    window.addEventListener("offline", updateNetworkBadge);
+
+    window.addEventListener("offline", () => {
+      const p = document.getElementById("netPill");
+      p.textContent = "Offline";
+      p.classList.add("offline");
+    });
 
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
-      deferredInstallPrompt = e;
-      document.getElementById("installBtn").style.display = "inline-block";
-    });
-
-    document.getElementById("installBtn").addEventListener("click", async () => {
-      if (!deferredInstallPrompt) return;
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-      document.getElementById("installBtn").style.display = "none";
+      deferredPrompt = e;
+      const btn = document.getElementById("installBtn");
+      btn.style.display = "inline-flex";
+      btn.addEventListener("click", async () => {
+        btn.style.display = "none";
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      }, { once: true });
     });
 
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/bisrat-auto-youtube/service-worker.js").catch(() => {});
-      });
+      navigator.serviceWorker.register("service-worker.js").catch(() => {});
     }
 
-    writeInputs();
-    updateNetworkBadge();
-    renderPendingBanner();
-    renderUI();
-    setInterval(renderUI, 1000);
-    if (navigator.onLine) syncFromGitHub();
+    const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (storedToken) {
+      tokenInput.value = storedToken;
+    }
+
+    setInterval(tickCountdown, 1000);
+    syncAll();
   </script>
 </body>
 </html>
