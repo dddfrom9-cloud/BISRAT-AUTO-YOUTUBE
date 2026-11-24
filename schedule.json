@@ -1,0 +1,9 @@
+{
+  "mode": "repeat",
+  "intervalHours": 6,
+  "intervalMinutes": 0,
+  "active": false,
+  "nextRunAt": null,
+  "lastRunAt": null,
+  "updatedAt": null
+}
