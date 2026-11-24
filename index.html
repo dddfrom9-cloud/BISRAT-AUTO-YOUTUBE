@@ -1,59 +1,562 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BISRAT AUTO YOUTUBE</title>
-<style>
-:root{color-scheme:dark;--bg:#071326;--panel:#102443;--line:#29496f;--text:#f3f7ff;--muted:#b5c5dc;--blue:#087dff;--purple:#8c42ff;--green:#19d89a}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#102c59,#050c19 65%);color:var(--text);font:16px system-ui,Arial}
-main{max-width:850px;margin:auto;padding:22px}.brand{text-align:center;padding:12px}.brand h1{margin:5px;color:#ffdf50}.brand p{color:var(--muted)}
-.panel{background:#0c1e38;border:1px solid var(--line);border-radius:18px;padding:18px;margin:16px 0}
-.modes{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mode{background:#10294c;border:1px solid #1686ff;border-radius:15px;padding:16px}.once{border-color:#a35bff;background:#21183f}
-h2{font-size:20px;margin:0 0 8px}p{color:var(--muted);line-height:1.5}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
-label{display:block;color:var(--muted);font-size:13px;margin-bottom:5px}input{width:100%;padding:12px;background:#061329;color:white;border:1px solid #34577f;border-radius:10px;font-size:20px}
-button{width:100%;padding:13px;border:0;border-radius:11px;color:white;background:var(--blue);font-weight:700;font-size:16px;margin-top:8px}.once button{background:var(--purple)}
-#count{font-size:34px;font-weight:800;color:#ffdf50;font-variant-numeric:tabular-nums}.notice{background:#30250d;border:1px solid #87651d;border-radius:12px;padding:12px;color:#ffe6a3;font-size:14px}
-.small{font-size:13px}.status{color:var(--green);min-height:24px;overflow-wrap:anywhere}
-@media(max-width:650px){.modes{grid-template-columns:1fr}main{padding:13px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>BISRAT AUTO YOUTUBE</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #131c31;
+      --card-2: #19243f;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #ef4444;
+      --accent-2: #38bdf8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --border: rgba(148, 163, 184, 0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 14px;
+      line-height: 1.45;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; display: grid; gap: 14px; }
+    .topbar {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
+      background: var(--card); padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border);
+    }
+    h1 { margin: 0; font-size: 1.15rem; }
+    .sub { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+    .badge {
+      padding: 5px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+      background: var(--card-2); border: 1px solid var(--border);
+    }
+    .online { color: var(--ok); }
+    .offline { color: var(--warn); }
+    .card {
+      background: var(--card); border-radius: 14px; padding: 15px; border: 1px solid var(--border);
+      display: grid; gap: 12px;
+    }
+    .card h2 { margin: 0; font-size: 1rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    @media (max-width: 520px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+    label { display: grid; gap: 5px; font-size: 0.82rem; color: var(--muted); }
+    input, select {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      background: var(--card-2); color: var(--text); border: 1px solid var(--border); font-size: 0.95rem;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    button {
+      padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+      font-weight: 600; font-size: 0.88rem; cursor: pointer; background: var(--card-2); color: var(--text);
+    }
+    button.primary { background: var(--accent); border-color: transparent; color: #fff; }
+    button.secondary { background: var(--accent-2); border-color: transparent; color: #061322; }
+    .stat { background: var(--card-2); padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
+    .stat-label { font-size: 0.75rem; color: var(--muted); }
+    .stat-val { font-size: 1rem; font-weight: 700; margin-top: 3px; word-break: break-word; }
+    .list { display: grid; gap: 8px; }
+    .item {
+      background: var(--card-2); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+      font-size: 0.84rem; display: flex; justify-content: space-between; gap: 10px; align-items: center;
+    }
+    .muted { color: var(--muted); font-size: 0.8rem; }
+    .status-msg { font-size: 0.84rem; color: var(--accent-2); min-height: 20px; }
+    a { color: var(--accent-2); text-decoration: none; }
+  </style>
 </head>
-<body><main>
-<header class="brand"><div style="font-size:42px">👑 ▶️</div><h1>BISRAT AUTO YOUTUBE</h1><p>Cloud queue • Repeat mode • One-time mode</p></header>
-<section class="panel">
-<h2>🔁 Mode 1 — Repeat</h2>
-<p>Upload one next video, then wait the selected interval before the next upload.</p>
-<div class="fields"><div><label for="rh">Hours</label><input id="rh" type="number" min="0" max="720" value="2"></div><div><label for="rm">Minutes</label><input id="rm" type="number" min="0" max="59" value="30"></div></div>
-<button id="repeat">Start repeat mode — download config</button>
-</section>
-<section class="panel">
-<h2>⌛ Mode 2 — One-time</h2>
-<p>Wait once from the moment you press Start, then upload only one next video.</p>
-<div class="fields"><div><label for="oh">Hours</label><input id="oh" type="number" min="0" max="720" value="0"></div><div><label for="om">Minutes</label><input id="om" type="number" min="0" max="59" value="10"></div></div>
-<button id="once">Start one-time timer — download config</button>
-</section>
-<section class="panel">
-<div class="small">Browser preview countdown</div><div id="count">--:--:--</div>
-<div id="status" class="status">Not started</div>
-<button id="stop" style="background:#465b78">Stop preview</button>
-</section>
-<section class="panel">
-<h2>⚠️ Important: connect settings to cloud</h2>
-<div class="notice">This page cannot securely edit your GitHub repository by itself. After pressing Start, upload the downloaded <b>config.json</b> to the root of your GitHub repository and commit it. GitHub Actions checks every 5 minutes, so actual posting can be later than the countdown by 5 minutes or more.</div>
-<p class="small">The GitHub cloud workflow keeps running when your phone is off. Your phone is only needed to change settings or upload videos to Google Drive.</p>
-</section>
-</main>
-<script>
-const $=id=>document.getElementById(id);let timer=null,deadline=0;
-function number(id){return Math.max(0,Math.floor(Number($(id).value)||0))}
-function fmt(s){s=Math.max(0,Math.floor(s));return [Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(x=>String(x).padStart(2,'0')).join(':')}
-function tick(){const left=Math.max(0,Math.ceil((deadline-Date.now())/1000));$('count').textContent=fmt(left);if(left===0){clearInterval(timer);timer=null;$('status').textContent='Timer finished. Cloud checks every 5 minutes; posting may be delayed.'}}
-function begin(seconds,config,message){if(seconds<=0){$('status').textContent='Enter a delay greater than zero.';return}
-if(timer)clearInterval(timer);deadline=Date.now()+seconds*1000;tick();timer=setInterval(tick,1000);$('status').textContent=message+' Downloading config.json…';
-const blob=new Blob([JSON.stringify(config,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='config.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
-$('repeat').onclick=()=>{const mins=number('rh')*60+number('rm');if(!mins){$('status').textContent='Repeat interval must be greater than zero.';return}
-begin(mins*60,{enabled:true,mode:'repeat',interval_minutes:mins,run_at:null},'Repeat mode started locally. Upload config.json to GitHub to activate cloud posting.')};
-$('once').onclick=()=>{const mins=number('oh')*60+number('om');if(!mins){$('status').textContent='One-time delay must be greater than zero.';return}
-const runAt=new Date(Date.now()+mins*60000).toISOString();
-begin(mins*60,{enabled:true,mode:'once',interval_minutes:0,run_at:runAt},'One-time timer started. Upload config.json to GitHub to activate cloud posting.')};
-$('stop').onclick=()=>{if(timer)clearInterval(timer);timer=null;deadline=0;$('count').textContent='--:--:--';$('status').textContent='Preview stopped. This does not cancel a config already uploaded to GitHub.'};
-</script></body></html>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>BISRAT AUTO YOUTUBE</h1>
+        <div class="sub">Queue: BISRAT_UPLOAD_QUEUE · Direct GitHub Actions Sync</div>
+      </div>
+      <div class="btn-row">
+        <span id="netBadge" class="badge">Checking...</span>
+        <button id="installBtn" style="display:none;" class="secondary">Install App</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Schedule &amp; Mode Controls</h2>
+      <div class="grid-3">
+        <label>
+          Mode
+          <select id="modeInput">
+            <option value="repeat">Repeat mode (continuous)</option>
+            <option value="once">One-time mode (1 video then stop)</option>
+          </select>
+        </label>
+        <label>
+          Hours
+          <input id="hoursInput" type="number" min="0" max="168" value="6" />
+        </label>
+        <label>
+          Minutes
+          <input id="minutesInput" type="number" min="0" max="59" value="0" />
+        </label>
+      </div>
+
+      <label>
+        GitHub Fine-Grained Token (stored only on this phone, never in repo)
+        <input id="tokenInput" type="password" placeholder="github_pat_..." autocomplete="off" />
+      </label>
+
+      <div class="btn-row">
+        <button id="startBtn" class="primary">Start Schedule</button>
+        <button id="saveBtn">Save Settings</button>
+        <button id="stopBtn">Stop Schedule</button>
+        <button id="runNowBtn" class="secondary">Run Next Now</button>
+        <button id="syncBtn">Sync Now</button>
+      </div>
+
+      <div id="statusMsg" class="status-msg"></div>
+      <div id="pendingBanner" class="muted"></div>
+    </div>
+
+    <div class="card">
+      <h2>Live Status &amp; Countdown</h2>
+      <div class="grid-3">
+        <div class="stat">
+          <div class="stat-label">Schedule State</div>
+          <div id="activeVal" class="stat-val">Stopped</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Active Mode</div>
+          <div id="modeVal" class="stat-val">Repeat</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Countdown to Next Run</div>
+          <div id="countdownVal" class="stat-val">--:--:--</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="stat">
+          <div class="stat-label">Next Scheduled Run (Local Time)</div>
+          <div id="nextRunVal" class="stat-val">Not scheduled</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Last Run / Upload</div>
+          <div id="lastRunVal" class="stat-val">No recent run data</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Upload History (state.json) &amp; Errors</h2>
+      <div id="historyList" class="list">
+        <div class="muted">Tap Sync Now to load state.json history.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Recent GitHub Actions Runs</h2>
+      <div id="runsList" class="list">
+        <div class="muted">No workflow runs loaded yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const OWNER = "dddfrom9-cloud";
+    const REPO = "bisrat-auto-youtube";
+    const BRANCH = "main";
+    const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}`;
+    const STORAGE_KEY = "bisrat_auto_yt_direct_v1";
+    let deferredInstallPrompt = null;
+
+    const defaultState = {
+      token: "",
+      schedule: {
+        mode: "repeat",
+        intervalHours: 6,
+        intervalMinutes: 0,
+        active: false,
+        nextRunAt: null,
+        lastRunAt: null,
+        updatedAt: null
+      },
+      pendingSchedule: null,
+      uploadedState: {},
+      runs: []
+    };
+
+    function loadLocal() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        const parsed = JSON.parse(raw);
+        return {
+          ...structuredClone(defaultState),
+          ...parsed,
+          schedule: { ...defaultState.schedule, ...(parsed.schedule || {}) }
+        };
+      } catch {
+        return structuredClone(defaultState);
+      }
+    }
+
+    let app = loadLocal();
+
+    function saveLocal() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+      renderPendingBanner();
+    }
+
+    function setStatus(msg, isError = false) {
+      const el = document.getElementById("statusMsg");
+      el.textContent = msg;
+      el.style.color = isError ? "#ef4444" : "#38bdf8";
+    }
+
+    function updateNetworkBadge() {
+      const badge = document.getElementById("netBadge");
+      if (navigator.onLine) {
+        badge.textContent = "Online";
+        badge.className = "badge online";
+      } else {
+        badge.textContent = "Offline (Queued locally)";
+        badge.className = "badge offline";
+      }
+    }
+
+    function renderPendingBanner() {
+      const el = document.getElementById("pendingBanner");
+      el.textContent = app.pendingSchedule
+        ? "Offline change queued: will sync to GitHub automatically when internet returns."
+        : "Cloud uploads run on GitHub Actions even when your phone is off or offline.";
+    }
+
+    function ghHeaders(includeAuth = true) {
+      const headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      };
+      if (includeAuth && app.token) {
+        headers["Authorization"] = `Bearer ${app.token}`;
+      }
+      return headers;
+    }
+
+    function computeNextRunIso(hours, minutes) {
+      const totalMs = (Math.max(0, Number(hours) || 0) * 60 + Math.max(0, Number(minutes) || 0)) * 60000;
+      return new Date(Date.now() + totalMs).toISOString();
+    }
+
+    function readInputs() {
+      app.token = document.getElementById("tokenInput").value.trim();
+      const mode = document.getElementById("modeInput").value;
+      const h = Math.max(0, parseInt(document.getElementById("hoursInput").value, 10) || 0);
+      const m = Math.min(59, Math.max(0, parseInt(document.getElementById("minutesInput").value, 10) || 0));
+      document.getElementById("hoursInput").value = h;
+      document.getElementById("minutesInput").value = m;
+      app.schedule.mode = mode;
+      app.schedule.intervalHours = h;
+      app.schedule.intervalMinutes = m;
+      app.schedule.updatedAt = new Date().toISOString();
+    }
+
+    function writeInputs() {
+      document.getElementById("tokenInput").value = app.token || "";
+      document.getElementById("modeInput").value = app.schedule.mode || "repeat";
+      document.getElementById("hoursInput").value = app.schedule.intervalHours ?? 6;
+      document.getElementById("minutesInput").value = app.schedule.intervalMinutes ?? 0;
+    }
+
+    function formatDuration(ms) {
+      if (ms <= 0) return "Due now (waiting for runner)";
+      const totalSec = Math.floor(ms / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function renderUI() {
+      document.getElementById("activeVal").textContent = app.schedule.active ? "Active" : "Stopped";
+      document.getElementById("modeVal").textContent = app.schedule.mode === "once" ? "One-Time" : "Repeat";
+
+      if (app.schedule.active && app.schedule.nextRunAt) {
+        const nextMs = new Date(app.schedule.nextRunAt).getTime();
+        document.getElementById("nextRunVal").textContent = new Date(nextMs).toLocaleString();
+        document.getElementById("countdownVal").textContent = formatDuration(nextMs - Date.now());
+      } else {
+        document.getElementById("nextRunVal").textContent = "Not scheduled";
+        document.getElementById("countdownVal").textContent = "--:--:--";
+      }
+
+      const lastRun = app.runs && app.runs.length ? app.runs[0] : null;
+      document.getElementById("lastRunVal").textContent = lastRun
+        ? `${lastRun.conclusion || lastRun.status} · ${new Date(lastRun.createdAt).toLocaleString()}`
+        : (app.schedule.lastRunAt ? new Date(app.schedule.lastRunAt).toLocaleString() : "No recent run data");
+
+      const historyEl = document.getElementById("historyList");
+      const stateObj = app.uploadedState || {};
+      const entries = [];
+
+      if (Array.isArray(stateObj.uploaded_ids)) {
+        stateObj.uploaded_ids.forEach((id) => entries.push({ id, note: "Uploaded" }));
+      } else if (stateObj.uploaded && typeof stateObj.uploaded === "object") {
+        Object.entries(stateObj.uploaded).forEach(([id, info]) => {
+          entries.push({ id, note: typeof info === "string" ? info : (info?.title || "Uploaded") });
+        });
+      } else if (typeof stateObj === "object") {
+        Object.entries(stateObj).forEach(([k, v]) => {
+          if (k !== "last_error" && k !== "errors") {
+            entries.push({ id: k, note: typeof v === "string" ? v : JSON.stringify(v) });
+          }
+        });
+      }
+
+      historyEl.innerHTML = "";
+      const errNote = stateObj.last_error || (Array.isArray(stateObj.errors) && stateObj.errors.join("; "));
+      if (errNote) {
+        const errDiv = document.createElement("div");
+        errDiv.className = "item";
+        errDiv.style.borderColor = "rgba(239, 68, 68, 0.5)";
+        errDiv.innerHTML = `<span><strong>Error:</strong> ${escapeHtml(errNote)}</span>`;
+        historyEl.appendChild(errDiv);
+      }
+
+      if (!entries.length) {
+        historyEl.innerHTML += `<div class="muted">No uploaded file IDs cached yet.</div>`;
+      } else {
+        entries.slice(-15).reverse().forEach((item) => {
+          const div = document.createElement("div");
+          div.className = "item";
+          div.innerHTML = `<span><strong>${escapeHtml(item.id)}</strong></span><span class="muted">${escapeHtml(item.note)}</span>`;
+          historyEl.appendChild(div);
+        });
+      }
+
+      const runsEl = document.getElementById("runsList");
+      runsEl.innerHTML = "";
+      if (!app.runs || !app.runs.length) {
+        runsEl.innerHTML = `<div class="muted">No workflow runs loaded yet.</div>`;
+      } else {
+        app.runs.slice(0, 6).forEach((run) => {
+          const div = document.createElement("div");
+          div.className = "item";
+          const label = `${run.name || "Workflow"} — ${run.conclusion || run.status}`;
+          div.innerHTML = `<span>${escapeHtml(label)}<br><span class="muted">${new Date(run.createdAt).toLocaleString()}</span></span>` +
+            (run.url ? `<a href="${escapeHtml(run.url)}" target="_blank" rel="noopener">Log</a>` : "");
+          runsEl.appendChild(div);
+        });
+      }
+    }
+
+    async function pushScheduleToGitHub(scheduleObj) {
+      if (!app.token) {
+        setStatus("Saved locally. Enter your GitHub Fine-Grained Token above to sync.", true);
+        return;
+      }
+      if (!navigator.onLine) {
+        app.pendingSchedule = scheduleObj;
+        saveLocal();
+        setStatus("Offline: schedule change queued and will sync when internet returns.");
+        return;
+      }
+
+      try {
+        const getRes = await fetch(`${API_BASE}/contents/schedule.json?ref=${BRANCH}`, {
+          headers: ghHeaders(true),
+          cache: "no-store"
+        });
+        const existing = getRes.ok ? await getRes.json() : null;
+        const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(scheduleObj, null, 2))));
+
+        const body = {
+          message: "Update schedule from BISRAT AUTO YOUTUBE app",
+          content: encoded,
+          branch: BRANCH
+        };
+        if (existing?.sha) body.sha = existing.sha;
+
+        const putRes = await fetch(`${API_BASE}/contents/schedule.json`, {
+          method: "PUT",
+          headers: { ...ghHeaders(true), "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        if (!putRes.ok) {
+          const errData = await putRes.json().catch(() => ({}));
+          throw new Error(errData.message || `HTTP ${putRes.status}`);
+        }
+
+        app.pendingSchedule = null;
+        saveLocal();
+        setStatus("Schedule saved directly to GitHub (schedule.json updated).");
+      } catch (err) {
+        app.pendingSchedule = scheduleObj;
+        saveLocal();
+        setStatus(`Sync failed (${err.message}). Queued locally for retry.`, true);
+      }
+    }
+
+    async function syncFromGitHub() {
+      readInputs();
+      saveLocal();
+      if (!navigator.onLine) {
+        setStatus("Offline: displaying cached settings and state.json history.");
+        return;
+      }
+
+      if (app.pendingSchedule && app.token) {
+        await pushScheduleToGitHub(app.pendingSchedule);
+      }
+
+      try {
+        const headers = ghHeaders(Boolean(app.token));
+        const [schedRes, stateRes, runsRes] = await Promise.all([
+          fetch(`${API_BASE}/contents/schedule.json?ref=${BRANCH}`, { headers, cache: "no-store" }),
+          fetch(`${API_BASE}/contents/state.json?ref=${BRANCH}`, { headers, cache: "no-store" }),
+          fetch(`${API_BASE}/actions/runs?per_page=8`, { headers, cache: "no-store" })
+        ]);
+
+        if (schedRes.ok && !app.pendingSchedule) {
+          const sJson = await schedRes.json();
+          const parsedSched = JSON.parse(atob(sJson.content.replace(/\n/g, "")));
+          app.schedule = { ...app.schedule, ...parsedSched };
+          writeInputs();
+        }
+
+        if (stateRes.ok) {
+          const stJson = await stateRes.json();
+          app.uploadedState = JSON.parse(atob(stJson.content.replace(/\n/g, "")));
+        }
+
+        if (runsRes.ok) {
+          const rJson = await runsRes.json();
+          app.runs = (rJson.workflow_runs || []).map((r) => ({
+            id: r.id,
+            name: r.name,
+            status: r.status,
+            conclusion: r.conclusion,
+            createdAt: r.created_at,
+            url: r.html_url
+          }));
+        }
+
+        saveLocal();
+        renderUI();
+        setStatus("Synced latest schedule, state.json, and workflow runs from GitHub.");
+      } catch (err) {
+        setStatus(`Sync error: ${err.message}`, true);
+      }
+    }
+
+    document.getElementById("startBtn").addEventListener("click", async () => {
+      readInputs();
+      app.schedule.active = true;
+      app.schedule.nextRunAt = computeNextRunIso(app.schedule.intervalHours, app.schedule.intervalMinutes);
+      saveLocal();
+      renderUI();
+      await pushScheduleToGitHub(app.schedule);
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", async () => {
+      readInputs();
+      if (app.schedule.active) {
+        app.schedule.nextRunAt = computeNextRunIso(app.schedule.intervalHours, app.schedule.intervalMinutes);
+      }
+      saveLocal();
+      renderUI();
+      await pushScheduleToGitHub(app.schedule);
+    });
+
+    document.getElementById("stopBtn").addEventListener("click", async () => {
+      readInputs();
+      app.schedule.active = false;
+      app.schedule.nextRunAt = null;
+      saveLocal();
+      renderUI();
+      await pushScheduleToGitHub(app.schedule);
+    });
+
+    document.getElementById("runNowBtn").addEventListener("click", async () => {
+      readInputs();
+      saveLocal();
+      if (!app.token) {
+        setStatus("Enter your GitHub Fine-Grained Token first to trigger uploads.", true);
+        return;
+      }
+      if (!navigator.onLine) {
+        setStatus("Cannot trigger workflow while offline.", true);
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/actions/workflows/autopost.yml/dispatches`, {
+          method: "POST",
+          headers: { ...ghHeaders(true), "Content-Type": "application/json" },
+          body: JSON.stringify({ ref: BRANCH })
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.message || `HTTP ${res.status}`);
+        }
+        app.schedule.lastRunAt = new Date().toISOString();
+        saveLocal();
+        renderUI();
+        setStatus("Triggered autopost.yml on GitHub Actions! Tap Sync Now in 30s to see run status.");
+      } catch (err) {
+        setStatus(`Trigger failed: ${err.message}`, true);
+      }
+    });
+
+    document.getElementById("syncBtn").addEventListener("click", syncFromGitHub);
+
+    window.addEventListener("online", () => {
+      updateNetworkBadge();
+      if (app.pendingSchedule) syncFromGitHub();
+    });
+    window.addEventListener("offline", updateNetworkBadge);
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      document.getElementById("installBtn").style.display = "inline-block";
+    });
+
+    document.getElementById("installBtn").addEventListener("click", async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      document.getElementById("installBtn").style.display = "none";
+    });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/bisrat-auto-youtube/service-worker.js").catch(() => {});
+      });
+    }
+
+    writeInputs();
+    updateNetworkBadge();
+    renderPendingBanner();
+    renderUI();
+    setInterval(renderUI, 1000);
+    if (navigator.onLine) syncFromGitHub();
+  </script>
+</body>
+</html>
