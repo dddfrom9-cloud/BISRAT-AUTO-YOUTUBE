@@ -1,3 +1,4 @@
+import io
 import json
 import mimetypes
 import os
@@ -9,7 +10,6 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
-import io
 
 SCHEDULE_PATH = Path("schedule.json")
 STATE_PATH = Path("state.json")
@@ -22,6 +22,7 @@ DEFAULT_SCHEDULE = {
     "nextRunAt": None,
     "lastRunAt": None,
     "updatedAt": None,
+    "channel": 1,
 }
 
 DEFAULT_STATE = {
@@ -68,10 +69,20 @@ def normalize_state(raw: dict) -> dict:
     return state
 
 
-def get_google_creds() -> Credentials:
-    client_id = os.environ["GOOGLE_CLIENT_ID"]
-    client_secret = os.environ["GOOGLE_CLIENT_SECRET"]
-    refresh_token = os.environ["GOOGLE_REFRESH_TOKEN"]
+def resolve_refresh_token(channel: int) -> str:
+    # Channel 1 uses GOOGLE_REFRESH_TOKEN; Channel 2+ checks GOOGLE_REFRESH_TOKEN_2, etc.,
+    # falling back to GOOGLE_REFRESH_TOKEN if a numbered secret isn't set.
+    if channel and channel > 1:
+        numbered = os.environ.get(f"GOOGLE_REFRESH_TOKEN_{channel}", "").strip()
+        if numbered:
+            return numbered
+    return os.environ["GOOGLE_REFRESH_TOKEN"].strip()
+
+
+def get_google_creds(channel: int = 1) -> Credentials:
+    client_id = os.environ["GOOGLE_CLIENT_ID"].strip()
+    client_secret = os.environ["GOOGLE_CLIENT_SECRET"].strip()
+    refresh_token = resolve_refresh_token(channel)
 
     creds = Credentials(
         token=None,
@@ -169,9 +180,6 @@ def download_drive_file(drive_service, file_id: str, target_path: Path) -> None:
 
 
 def upload_to_youtube(youtube_service, file_path: Path, title: str) -> str:
-    publish_at = (datetime.now(timezone.utc) + timedelta(minutes=90)).strftime(
-        "%Y-%m-%dT%H:%M:%S.0Z"
-    )
     description = os.environ.get("DEFAULT_DESCRIPTION", "")
     raw_tags = os.environ.get("DEFAULT_TAGS", "")
     tags = [t.strip() for t in raw_tags.split(",") if t.strip()]
@@ -189,8 +197,8 @@ def upload_to_youtube(youtube_service, file_path: Path, title: str) -> str:
             "categoryId": category_id,
         },
         "status": {
-            "privacyStatus": "private",
-            "publishAt": publish_at,
+            "privacyStatus": "public",
+            "selfDeclaredMadeForKids": False,
         },
     }
 
@@ -216,8 +224,9 @@ def main() -> None:
         save_json(STATE_PATH, state)
         return
 
+    channel = max(1, int(schedule.get("channel", 1) or 1))
     folder_id = os.environ.get("DRIVE_FOLDER_ID") or "1T6p5uPhh720-NG_f7yuJmvi3A5Wa1bgg"
-    creds = get_google_creds()
+    creds = get_google_creds(channel=channel)
     drive_service = build("drive", "v3", credentials=creds)
     youtube_service = build("youtube", "v3", credentials=creds)
 
@@ -239,7 +248,7 @@ def main() -> None:
         print(f"Downloading '{raw_name}' ({drive_id}) from Drive...")
         download_drive_file(drive_service, drive_id, tmp_file)
 
-        print(f"Uploading '{clean_title}' to YouTube (scheduled +90 mins)...")
+        print(f"Uploading '{clean_title}' to YouTube channel #{channel} (direct public)...")
         yt_id = upload_to_youtube(youtube_service, tmp_file, clean_title)
 
     if drive_id not in state["uploaded"]:
