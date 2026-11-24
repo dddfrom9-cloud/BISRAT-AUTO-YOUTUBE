@@ -1,0 +1,19 @@
+{
+  "name": "BISRAT AUTO YOUTUBE",
+  "short_name": "BISRAT AUTO",
+  "description": "Offline-capable controller and status dashboard for BISRAT AUTO YOUTUBE.",
+  "start_url": "/bisrat-auto-youtube/",
+  "scope": "/bisrat-auto-youtube/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%23ef4444'/%3E%3Cpolygon points='74,56 140,96 74,136' fill='%23ffffff'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
